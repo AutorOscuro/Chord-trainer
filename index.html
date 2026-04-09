@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Química Básica – Guía de Estudio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0e1a;
+    --surface: #111827;
+    --surface2: #1a2235;
+    --border: #1f2d45;
+    --accent: #3b82f6;
+    --accent2: #22d3ee;
+    --accent3: #a78bfa;
+    --accent4: #34d399;
+    --warn: #f59e0b;
+    --danger: #ef4444;
+    --text: #e2e8f0;
+    --text2: #94a3b8;
+    --text3: #64748b;
+    --glow: 0 0 20px rgba(59,130,246,0.3);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif; min-height:100vh; overflow-x:hidden; }
+  
+  /* SCANLINE OVERLAY */
+  body::before { content:''; position:fixed; inset:0; background:repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px); pointer-events:none; z-index:1000; }
+
+  /* HEADER */
+  header { padding:2rem 1.5rem 1rem; text-align:center; position:relative; }
+  header::after { content:''; display:block; height:1px; background:linear-gradient(90deg,transparent,var(--accent),var(--accent2),transparent); margin-top:1.5rem; }
+  .header-label { font-family:'JetBrains Mono',monospace; font-size:0.65rem; letter-spacing:0.3em; color:var(--accent2); text-transform:uppercase; margin-bottom:0.5rem; }
+  h1 { font-family:'Syne',sans-serif; font-size:clamp(1.6rem,5vw,2.4rem); font-weight:800; background:linear-gradient(135deg,#e2e8f0,var(--accent),var(--accent2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; line-height:1.1; }
+  .subtitle { color:var(--text2); font-size:0.9rem; margin-top:0.5rem; font-weight:300; }
+
+  /* NAV */
+  nav { display:flex; overflow-x:auto; gap:0.5rem; padding:1rem 1.5rem; scrollbar-width:none; }
+  nav::-webkit-scrollbar { display:none; }
+  .nav-btn { flex-shrink:0; padding:0.5rem 1rem; border-radius:999px; border:1px solid var(--border); background:var(--surface); color:var(--text2); font-size:0.8rem; font-family:'DM Sans',sans-serif; cursor:pointer; transition:all 0.2s; white-space:nowrap; }
+  .nav-btn:hover, .nav-btn.active { background:var(--accent); border-color:var(--accent); color:#fff; box-shadow:var(--glow); }
+
+  /* MAIN CONTAINER */
+  main { padding:0 1.5rem 4rem; max-width:900px; margin:0 auto; }
+
+  /* SECTION CARDS */
+  .section-intro { background:linear-gradient(135deg,var(--surface),var(--surface2)); border:1px solid var(--border); border-radius:16px; padding:1.5rem; margin-bottom:1.5rem; position:relative; overflow:hidden; }
+  .section-intro::before { content:''; position:absolute; top:-30px; right:-30px; width:120px; height:120px; border-radius:50%; background:radial-gradient(circle,rgba(59,130,246,0.15),transparent); }
+  .section-tag { font-family:'JetBrains Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; color:var(--accent2); text-transform:uppercase; margin-bottom:0.5rem; }
+  .section-title { font-family:'Syne',sans-serif; font-size:1.4rem; font-weight:800; margin-bottom:0.75rem; }
+  .section-desc { color:var(--text2); font-size:0.9rem; line-height:1.7; }
+
+  /* CONTENT BLOCKS */
+  .content-block { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:1.25rem; margin-bottom:1rem; }
+  .content-block h3 { font-family:'Syne',sans-serif; font-size:1.05rem; font-weight:700; margin-bottom:0.75rem; color:var(--accent2); display:flex; align-items:center; gap:0.5rem; }
+  .content-block h3 .icon { width:22px; height:22px; border-radius:6px; background:linear-gradient(135deg,var(--accent),var(--accent2)); display:flex; align-items:center; justify-content:center; font-size:0.7rem; flex-shrink:0; }
+  .content-block p { color:var(--text2); font-size:0.88rem; line-height:1.8; margin-bottom:0.6rem; }
+  .content-block p:last-child { margin-bottom:0; }
+  .content-block strong { color:var(--accent2); font-weight:500; }
+
+  /* ANALOGY BOX */
+  .analogy { background:linear-gradient(135deg,rgba(167,139,250,0.1),rgba(34,211,238,0.05)); border:1px solid rgba(167,139,250,0.3); border-radius:10px; padding:1rem; margin:0.75rem 0; }
+  .analogy-label { font-family:'JetBrains Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; color:var(--accent3); text-transform:uppercase; margin-bottom:0.4rem; }
+  .analogy p { color:var(--text); font-size:0.87rem; line-height:1.7; font-style:italic; }
+
+  /* KEY FACT */
+  .key-fact { background:linear-gradient(135deg,rgba(59,130,246,0.1),rgba(34,211,238,0.05)); border-left:3px solid var(--accent); padding:0.75rem 1rem; border-radius:0 8px 8px 0; margin:0.75rem 0; }
+  .key-fact p { color:var(--text); font-size:0.87rem; line-height:1.7; }
+  .key-fact p strong { color:var(--accent); }
+
+  /* WARNING BOX */
+  .warning-box { background:rgba(245,158,11,0.08); border:1px solid rgba(245,158,11,0.3); border-radius:8px; padding:0.75rem 1rem; margin:0.75rem 0; }
+  .warning-box p { color:#fbbf24; font-size:0.85rem; line-height:1.6; }
+
+  /* TABLE */
+  .chem-table { width:100%; border-collapse:collapse; font-size:0.8rem; margin:0.75rem 0; }
+  .chem-table th { background:var(--surface2); color:var(--accent2); padding:0.5rem 0.75rem; text-align:left; font-family:'JetBrains Mono',monospace; font-size:0.65rem; letter-spacing:0.1em; text-transform:uppercase; }
+  .chem-table td { padding:0.5rem 0.75rem; border-top:1px solid var(--border); color:var(--text2); }
+  .chem-table tr:hover td { background:var(--surface2); color:var(--text); }
+
+  /* FORMULA BOX */
+  .formula { background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:0.6rem 1rem; font-family:'JetBrains Mono',monospace; color:var(--accent4); font-size:0.9rem; text-align:center; margin:0.5rem 0; }
+
+  /* STEP LIST */
+  .steps { list-style:none; margin:0.5rem 0; }
+  .steps li { display:flex; gap:0.75rem; margin-bottom:0.6rem; align-items:flex-start; }
+  .step-num { width:22px; height:22px; border-radius:50%; background:var(--accent); color:#fff; font-size:0.7rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; font-family:'JetBrains Mono',monospace; }
+  .steps li p { color:var(--text2); font-size:0.87rem; line-height:1.7; }
+
+  /* QUIZ */
+  .quiz-block { background:linear-gradient(135deg,var(--surface2),rgba(26,34,53,0.8)); border:1px solid var(--accent3); border-radius:14px; padding:1.25rem; margin:1rem 0; }
+  .quiz-label { font-family:'JetBrains Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; color:var(--accent3); text-transform:uppercase; margin-bottom:0.5rem; }
+  .quiz-q { font-family:'Syne',sans-serif; font-size:0.95rem; font-weight:700; margin-bottom:0.75rem; line-height:1.5; }
+  .quiz-options { display:flex; flex-direction:column; gap:0.4rem; }
+  .quiz-opt { padding:0.6rem 0.9rem; border-radius:8px; border:1px solid var(--border); background:var(--surface); color:var(--text2); font-size:0.85rem; cursor:pointer; transition:all 0.15s; text-align:left; font-family:'DM Sans',sans-serif; }
+  .quiz-opt:hover { border-color:var(--accent3); color:var(--text); }
+  .quiz-opt.correct { background:rgba(52,211,153,0.15); border-color:var(--accent4); color:var(--accent4); }
+  .quiz-opt.wrong { background:rgba(239,68,68,0.1); border-color:var(--danger); color:var(--danger); }
+  .quiz-feedback { margin-top:0.75rem; padding:0.6rem 0.9rem; border-radius:8px; font-size:0.85rem; display:none; line-height:1.6; }
+  .quiz-feedback.show { display:block; }
+  .quiz-feedback.correct-fb { background:rgba(52,211,153,0.1); color:var(--accent4); border:1px solid rgba(52,211,153,0.3); }
+  .quiz-feedback.wrong-fb { background:rgba(239,68,68,0.08); color:#fca5a5; border:1px solid rgba(239,68,68,0.3); }
+
+  /* MEMORY TRICKS */
+  .memory-trick { background:linear-gradient(135deg,rgba(52,211,153,0.08),rgba(34,211,238,0.05)); border:1px solid rgba(52,211,153,0.25); border-radius:10px; padding:1rem; margin:0.75rem 0; }
+  .memory-label { font-family:'JetBrains Mono',monospace; font-size:0.6rem; letter-spacing:0.2em; color:var(--accent4); text-transform:uppercase; margin-bottom:0.4rem; }
+  .memory-trick p { font-size:0.87rem; color:var(--text2); line-height:1.7; }
+  .memory-trick strong { color:var(--accent4); }
+
+  /* PERIODIC TABLE MINI */
+  .period-vis { display:grid; grid-template-columns:repeat(9,1fr); gap:3px; margin:0.75rem 0; font-size:0.55rem; }
+  .p-cell { padding:4px 2px; border-radius:4px; text-align:center; font-family:'JetBrains Mono',monospace; }
+  .p-cell.metal { background:rgba(59,130,246,0.2); color:#93c5fd; }
+  .p-cell.nonmetal { background:rgba(34,211,238,0.15); color:#67e8f9; }
+  .p-cell.metalloid { background:rgba(167,139,250,0.2); color:#c4b5fd; }
+  .p-cell.noble { background:rgba(52,211,153,0.15); color:#6ee7b7; }
+  .p-cell.empty { background:transparent; }
+
+  /* PROGRESS */
+  .progress-bar-outer { height:4px; background:var(--border); border-radius:999px; margin:0.5rem 0 1rem; }
+  .progress-bar-inner { height:100%; border-radius:999px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width 0.4s; }
+
+  /* COLLAPSIBLE */
+  .collapsible { border:1px solid var(--border); border-radius:10px; margin-bottom:0.6rem; overflow:hidden; }
+  .coll-header { padding:0.75rem 1rem; background:var(--surface); display:flex; justify-content:space-between; align-items:center; cursor:pointer; font-size:0.88rem; font-weight:500; color:var(--text2); }
+  .coll-header:hover { background:var(--surface2); color:var(--text); }
+  .coll-arrow { transition:transform 0.2s; font-size:0.7rem; color:var(--accent); }
+  .coll-arrow.open { transform:rotate(90deg); }
+  .coll-body { display:none; padding:1rem; background:var(--surface2); border-top:1px solid var(--border); }
+  .coll-body.open { display:block; }
+  .coll-body p { color:var(--text2); font-size:0.87rem; line-height:1.8; margin-bottom:0.5rem; }
+  .coll-body strong { color:var(--accent2); }
+
+  /* TREND ARROWS */
+  .trend-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin:0.75rem 0; }
+  .trend-card { background:var(--surface); border:1px solid var(--border); border-radius:10px; padding:0.75rem; text-align:center; }
+  .trend-card .prop-name { font-family:'Syne',sans-serif; font-size:0.8rem; font-weight:700; margin-bottom:0.4rem; }
+  .trend-card .trend-desc { font-size:0.72rem; color:var(--text2); line-height:1.5; }
+  .trend-card .arrow-row { font-size:1.2rem; margin:0.3rem 0; }
+  .tc-size .prop-name { color:#93c5fd; }
+  .tc-ie .prop-name { color:#f9a8d4; }
+  .tc-en .prop-name { color:#fcd34d; }
+  .tc-ae .prop-name { color:#6ee7b7; }
+
+  /* BOTTOM PADDING */
+  .spacer { height:2rem; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:4px; height:4px; }
+  ::-webkit-scrollbar-track { background:var(--bg); }
+  ::-webkit-scrollbar-thumb { background:var(--border); border-radius:999px; }
+
+  /* HIDDEN SECTIONS */
+  .topic-section { display:none; }
+  .topic-section.active { display:block; }
+
+  /* BADGE */
+  .badge { display:inline-block; padding:0.2rem 0.6rem; border-radius:999px; font-size:0.65rem; font-family:'JetBrains Mono',monospace; letter-spacing:0.05em; }
+  .badge-blue { background:rgba(59,130,246,0.2); color:#93c5fd; }
+  .badge-cyan { background:rgba(34,211,238,0.15); color:#67e8f9; }
+  .badge-purple { background:rgba(167,139,250,0.2); color:#c4b5fd; }
+  .badge-green { background:rgba(52,211,153,0.15); color:#6ee7b7; }
+  .badge-yellow { background:rgba(245,158,11,0.15); color:#fcd34d; }
+
+  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin:0.75rem 0; }
+  @media(max-width:480px){ .two-col { grid-template-columns:1fr; } .trend-grid { grid-template-columns:1fr 1fr; } }
+
+  /* ATOM DIAGRAM */
+  .atom-svg { display:block; margin:0.75rem auto; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-label">UIS · Escuela de Química · Prof. William Torres D.</div>
+  <h1>Química Básica (22949)</h1>
+  <p class="subtitle">Guía de estudio profunda para tu parcial · Módulos 2 y 3</p>
+</header>
+
+<nav>
+  <button class="nav-btn active" onclick="showTopic('modelos')">⚛ Modelos Atómicos</button>
+  <button class="nav-btn" onclick="showTopic('cuantica')">🌊 Mecánica Cuántica</button>
+  <button class="nav-btn" onclick="showTopic('config')">🔢 Config. Electrónica</button>
+  <button class="nav-btn" onclick="showTopic('tabla')">📊 Tabla Periódica</button>
+  <button class="nav-btn" onclick="showTopic('propiedades')">📈 Prop. Periódicas</button>
+  <button class="nav-btn" onclick="showTopic('masas')">⚖ Relaciones de Masa</button>
+  <button class="nav-btn" onclick="showTopic('quiz-final')">🎯 Repaso General</button>
+</nav>
+
+<main>
+
+<!-- ===== MODELOS ATÓMICOS ===== -->
+<div class="topic-section active" id="section-modelos">
+  <div class="section-intro">
+    <div class="section-tag">Lección 2.2 · T2.2</div>
+    <div class="section-title">Modelos Atómicos</div>
+    <p class="section-desc">Esto es la historia de cómo la humanidad fue descubriendo qué hay dentro de un átomo. Cada modelo es un intento de explicar experimentos reales — y cada uno falló en algo, llevando al siguiente.</p>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">1</span>¿Qué es un modelo atómico y por qué hay varios?</h3>
+    <p>Un <strong>modelo atómico</strong> es una representación simplificada de cómo está organizado el átomo. Como el átomo es tan pequeño (≈10⁻¹⁰ m), nunca lo podemos "ver" directamente — solo inferimos su estructura a partir de experimentos.</p>
+    <div class="analogy">
+      <div class="analogy-label">🧠 Analogía</div>
+      <p>Es como intentar adivinar la forma de una piñata en el cuarto oscuro tirándole objetos y analizando cómo rebotan. Cada "rebote" (experimento) te da información, y vas actualizando tu modelo.</p>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">T</span>Línea del tiempo: de Demócrito a Schrödinger</h3>
+    
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>🏛 Demócrito (~400 a.C.) — La idea original del átomo</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>Demócrito propuso que la materia estaba formada por partículas <strong>indivisibles, infinitamente pequeñas</strong> llamadas "átomos" (del griego <em>atomos</em> = sin división). No tenía evidencia experimental — era filosofía pura.</p>
+        <p>Lo clave: surgieron los <strong>3 números cuánticos: n, l, m</strong> (mencionado en tus talleres) — no de Demócrito, sino como consecuencia posterior al definir mejor qué es un "átomo".</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>⚙ John Dalton (1803) — Teoría Atómica moderna</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>Postulados de Dalton (todos son importantes para tu examen):</p>
+        <ul class="steps">
+          <li><span class="step-num">1</span><p>La materia está formada por partículas pequeñas e <strong>indivisibles</strong> llamadas átomos.</p></li>
+          <li><span class="step-num">2</span><p>Los átomos de un mismo elemento son <strong>idénticos</strong>; los de elementos diferentes son distintos.</p></li>
+          <li><span class="step-num">3</span><p>Los compuestos están formados por <strong>átomos de elementos diferentes</strong> combinados en proporciones fijas.</p></li>
+          <li><span class="step-num">4</span><p>En una reacción química, los átomos se reorganizan — no se crean ni destruyen.</p></li>
+        </ul>
+        <div class="warning-box"><p>⚠ <strong>¿Qué falló?</strong> Dalton dijo que los átomos eran indivisibles, pero luego se descubrieron el electrón, el protón y el neutrón. Y dijo que todos los átomos de un elemento son iguales, pero existen los <strong>isótopos</strong>.</p></div>
+        <p><strong>Lo que sí fue exitoso:</strong> Explica la Ley de conservación de masa y la Ley de proporciones definidas. Es la base de la <strong>estequiometría</strong> (taller N°6).</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>🍮 J.J. Thomson (1897) — Modelo del pudín de pasas</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>Thomson descubrió el <strong>electrón</strong> usando tubos de rayos catódicos. Al aplicar voltaje, notó que se emitían partículas cargadas negativamente desde cualquier material → eran parte del átomo.</p>
+        <p><strong>Modelo:</strong> El átomo es una esfera de carga positiva difusa, con electrones incrustados como pasas en un pudín (carga negativa puntual dentro de un fondo positivo).</p>
+        <div class="key-fact"><p><strong>Logro clave:</strong> Descubrió el electrón. Demostró que el átomo <em>sí</em> tiene partes. Primer número cuántico implícito.</p></div>
+        <div class="warning-box"><p>⚠ <strong>¿Qué falló?</strong> No pudo explicar los espectros de emisión del átomo de H, ni el experimento de Rutherford.</p></div>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>💥 Ernest Rutherford (1911) — Modelo planetario / nuclear</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p><strong>Experimento de la lámina de oro (Gold Foil Experiment):</strong> Rutherford disparó partículas α (carga +) hacia una lámina finísima de oro. Si Thomson tenía razón, todas deberían pasar recto (carga positiva difusa no deflecta mucho).</p>
+        <p><strong>Resultado sorprendente:</strong></p>
+        <ul class="steps">
+          <li><span class="step-num">1</span><p>La mayoría pasó recto → el átomo es <strong>casi todo vacío</strong>.</p></li>
+          <li><span class="step-num">2</span><p>Algunas se desviaron un poco → hay algo con carga positiva.</p></li>
+          <li><span class="step-num">3</span><p>Muy pocas rebotaron hacia atrás → hay un <strong>núcleo pequeño, denso y positivo</strong>.</p></li>
+        </ul>
+        <div class="analogy">
+          <div class="analogy-label">🧠 Analogía</div>
+          <p>Es como disparar balas a un papel de seda. Si casi todas pasan y de vez en cuando una rebota, es porque hay una bolita de acero en el centro.</p>
+        </div>
+        <p><strong>Modelo resultante:</strong> Núcleo positivo y denso en el centro, electrones orbitando a distancia (como planetas alrededor del sol).</p>
+        <p>Introdujo el concepto de <strong>atomismo</strong> y explicó la diferencia de masas entre H y He.</p>
+        <div class="warning-box"><p>⚠ <strong>¿Qué falló?</strong> Según física clásica, un electrón orbitando emite radiación, pierde energía y debería <em>caer en espiral hacia el núcleo en ~10⁻⁸ s</em>. Los átomos no colapsan → algo está mal.</p></div>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>☀ Max Planck (1900) — La energía viene en "paquetes"</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>Planck estudiaba la radiación emitida por objetos calientes. Descubrió que la energía <strong>no se emite de forma continua</strong>, sino en pequeñas cantidades discretas llamadas <strong>cuantos</strong>.</p>
+        <div class="formula">E = h·ν</div>
+        <p>Donde <strong>h = 6.626×10⁻³⁴ J·s</strong> (constante de Planck), y <strong>ν</strong> = frecuencia de la radiación.</p>
+        <div class="key-fact"><p><strong>Idea revolucionaria:</strong> La energía se absorbe o emite en cantidades discretas llamadas <strong>fotones</strong>. Los átomos y moléculas absorben/emiten energía solo en cantidades pequeñas discretas.</p></div>
+        <p>Esto apareció en tu taller de modelos: "La materia está formada por muchas partículas pequeñas e indivisibles" y "Los átomos/moléculas absorben/emiten energía solo en cantidades pequeñas discretas".</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>⚡ Albert Einstein — Efecto fotoeléctrico</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>Einstein explicó que la luz se comporta como partículas (<strong>fotones</strong>) con energía E = hν. Cuando un fotón golpea un metal, puede expulsar un electrón si tiene suficiente energía.</p>
+        <div class="formula">E_fotón = h·ν = E_cinética + Φ</div>
+        <p>La conclusión es que la luz tiene propiedades de <strong>onda y partícula</strong> al mismo tiempo (dualidad onda-partícula).</p>
+        <div class="key-fact"><p><strong>Premio Nobel 1921.</strong> Definió con mayor precisión el concepto de átomo a través de sus postulados.</p></div>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>🔵 Niels Bohr (1913) — Órbitas cuantizadas del H</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>Bohr tomó la idea de Planck y la aplicó al átomo de H. Propuso que los electrones solo pueden estar en <strong>órbitas específicas (fijas)</strong> alrededor del núcleo, sin emitir radiación.</p>
+        <p><strong>Postulados clave:</strong></p>
+        <ul class="steps">
+          <li><span class="step-num">1</span><p>Los e⁻ se mueven en órbitas circulares fijas → no caen en el núcleo.</p></li>
+          <li><span class="step-num">2</span><p>Cada órbita tiene un nivel de energía fijo (n = 1, 2, 3...).</p></li>
+          <li><span class="step-num">3</span><p>El e⁻ <em>salta</em> entre órbitas absorbiendo o emitiendo un fotón de energía exacta = diferencia de niveles.</p></li>
+        </ul>
+        <div class="analogy">
+          <div class="analogy-label">🧠 Analogía</div>
+          <p>Imagina una escalera: el electrón solo puede estar en un peldaño, no entre peldaños. Para subir necesita absorber energía exacta; al bajar, emite esa energía como luz.</p>
+        </div>
+        <p><strong>Logro enorme:</strong> Explicó perfectamente el espectro de emisión del H (las líneas de colores específicos que emite el hidrógeno). Introdujo el concepto de órbitas fijas.</p>
+        <div class="warning-box"><p>⚠ <strong>¿Qué falló?</strong> Solo funciona para H. No explica átomos con más de un electrón. El electrón no puede tener una posición exacta (principio de incertidumbre de Heisenberg).</p></div>
+        <div class="memory-trick">
+          <div class="memory-label">💡 Para recordar</div>
+          <p>Bohr: <strong>B</strong>óhr = <strong>B</strong>alconea desde una órbita fija. Define la dualidad onda-partícula del e⁻.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>🌊 De Broglie (1924) — El electrón como onda</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>De Broglie propuso que si la luz (onda) puede comportarse como partícula, entonces las partículas como el electrón también pueden comportarse como <strong>ondas</strong>.</p>
+        <div class="formula">λ = h / (m·v)</div>
+        <p>El electrón tiene una longitud de onda. Esto explica por qué las órbitas de Bohr solo son posibles en ciertos radios: la onda del e⁻ debe "caber" exactamente en la órbita (condición de resonancia).</p>
+        <p>También llamado "hipótesis de L. De Broglie" — también llamado modelo nuclear.</p>
+        <div class="key-fact"><p><strong>Consecuencia:</strong> Los e⁻ atados a un núcleo se comportan como ondas estacionarias. El concepto de tamaño atómico deja de existir como antes.</p></div>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>🎲 Schrödinger & Heisenberg — Mecánica Cuántica (modelo actual)</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p><strong>Heisenberg (Principio de Incertidumbre):</strong> Es imposible conocer simultáneamente con exactitud la posición Y el momento (velocidad) de un electrón. Cuanto más sabes de uno, menos sabes del otro.</p>
+        <p><strong>Schrödinger (1926):</strong> Desarrolló la ecuación de onda que describe al e⁻. La solución de su ecuación son <strong>funciones de onda (orbitales)</strong> — regiones del espacio donde es probable encontrar el e⁻.</p>
+        <div class="key-fact"><p><strong>La solución a la ecuación son funciones de onda llamadas orbitales.</strong> No describen dónde <em>está</em> el electrón, sino dónde es <em>probable</em> encontrarlo.</p></div>
+        <p>Muestra regiones en las que el e⁻ es más probable de encontrar que en otras. Introduce los 3 números cuánticos: <strong>n, l, mₗ</strong>.</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>📊 Tabla resumen comparativa de modelos</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <table class="chem-table">
+          <tr><th>Científico</th><th>Año</th><th>Aporte clave</th><th>Falla</th></tr>
+          <tr><td>Dalton</td><td>1803</td><td>Átomo indivisible; proporciones fijas</td><td>Isótopos; subpartículas</td></tr>
+          <tr><td>Thomson</td><td>1897</td><td>Descubrió el electrón; pudín de pasas</td><td>No explica espectros ni Rutherford</td></tr>
+          <tr><td>Rutherford</td><td>1911</td><td>Núcleo pequeño y denso; átomo casi vacío</td><td>e⁻ debería colapsar (electrodinámica clásica)</td></tr>
+          <tr><td>Planck</td><td>1900</td><td>Energía cuantizada: E = hν</td><td>Solo radiación de cuerpo negro</td></tr>
+          <tr><td>Einstein</td><td>1905</td><td>Efecto fotoeléctrico; fotones</td><td>—</td></tr>
+          <tr><td>Bohr</td><td>1913</td><td>Órbitas fijas; espectro del H</td><td>Solo funciona para H</td></tr>
+          <tr><td>De Broglie</td><td>1924</td><td>Dualidad onda-partícula del e⁻</td><td>—</td></tr>
+          <tr><td>Schrödinger</td><td>1926</td><td>Orbitales como funciones de onda</td><td>—</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Pregunta de práctica 1</div>
+    <div class="quiz-q">¿Qué experimento demostró que el átomo tiene un núcleo pequeño y denso?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','El tubo de rayos catódicos identificó el electrón, no el núcleo. Eso fue Thomson.')">Tubo de rayos catódicos de Thomson</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! El experimento de la lámina de oro de Rutherford: partículas α disparadas hacia oro → algunas rebotan → núcleo pequeño y denso.')">Lámina de oro de Rutherford</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Planck estudió la radiación de cuerpo negro, no la estructura del núcleo.')">Radiación de cuerpo negro de Planck</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','El efecto fotoeléctrico (Einstein) demostró la naturaleza cuántica de la luz, no la estructura nuclear.')">Efecto fotoeléctrico de Einstein</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Pregunta de práctica 2</div>
+    <div class="quiz-q">¿Por qué el modelo de Bohr falló para átomos con más de un electrón?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Bohr sí predijo los niveles de energía para H perfectamente.')">Porque no consideró los niveles de energía</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Exacto! Bohr solo consideró la interacción núcleo–electrón. Con múltiples electrones hay repulsiones e⁻–e⁻ que su ecuación no podía manejar.')">Porque no consideró las repulsiones entre electrones</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Bohr sí usó la cuantización de Planck como base.')">Porque no usó la cuantización de energía</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+</div>
+
+<!-- ===== MECANICA CUANTICA ===== -->
+<div class="topic-section" id="section-cuantica">
+  <div class="section-intro">
+    <div class="section-tag">Lección 2.2 · T5.2 · T8</div>
+    <div class="section-title">Números Cuánticos y Orbitales</div>
+    <p class="section-desc">Los números cuánticos son la "dirección postal" del electrón. Cuatro números = ubicación y espín único de cada electrón en el átomo.</p>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">n</span>Número cuántico principal (n)</h3>
+    <p><strong>¿Qué describe?</strong> El nivel de energía o "piso" donde vive el electrón. También determina el tamaño del orbital.</p>
+    <p><strong>Valores posibles:</strong> n = 1, 2, 3, 4, 5, 6, 7 (números enteros positivos)</p>
+    <div class="key-fact"><p><strong>n = 1:</strong> nivel más cercano al núcleo, menor energía. <strong>n = 7:</strong> nivel más externo, mayor energía.</p></div>
+    <p>A mayor n → orbital más grande → electrón más lejos del núcleo → <strong>menor atracción nuclear</strong>.</p>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">l</span>Número cuántico de momento angular (l) — subnivel</h3>
+    <p><strong>¿Qué describe?</strong> La forma del orbital. Determina el subnivel (s, p, d, f).</p>
+    <p><strong>Valores posibles:</strong> l = 0, 1, 2, ... (n−1)</p>
+    <table class="chem-table">
+      <tr><th>l</th><th>Subnivel</th><th>Forma</th><th>Max. orbitales</th><th>Max. e⁻</th></tr>
+      <tr><td>0</td><td>s</td><td>Esfera</td><td>1</td><td>2</td></tr>
+      <tr><td>1</td><td>p</td><td>Mancuerna / lobo</td><td>3</td><td>6</td></tr>
+      <tr><td>2</td><td>d</td><td>Trébol / compleja</td><td>5</td><td>10</td></tr>
+      <tr><td>3</td><td>f</td><td>Muy compleja</td><td>7</td><td>14</td></tr>
+    </table>
+    <div class="warning-box"><p>⚠ Para n=1: solo l=0 (solo hay 1s). Para n=2: l=0 y l=1 (hay 2s y 2p). Nota del taller: <strong>1p, 2d, 3f son incorrectos</strong> porque para esas n, l no puede tener ese valor.</p></div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">m</span>Número cuántico magnético (mₗ) — orientación</h3>
+    <p><strong>¿Qué describe?</strong> La orientación del orbital en el espacio.</p>
+    <p><strong>Valores posibles:</strong> mₗ = −l, ..., 0, ..., +l (es decir, 2l+1 valores)</p>
+    <div class="key-fact">
+      <p>Para l=1 (subnivel p): mₗ = −1, 0, +1 → <strong>3 orbitales p</strong>: px, py, pz</p>
+      <p>Para l=2 (subnivel d): mₗ = −2,−1, 0,+1,+2 → <strong>5 orbitales d</strong></p>
+    </div>
+    <div class="memory-trick">
+      <div class="memory-label">💡 Truco por convención (importante para el taller)</div>
+      <p>Se llenan primero los valores <strong>negativos</strong> de mₗ (de −l hasta +l), con espín hacia arriba (+1/2) primero, cumpliendo la <strong>Regla de Hund</strong>.</p>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">s</span>Número cuántico de espín (mₛ)</h3>
+    <p><strong>¿Qué describe?</strong> El "giro" del electrón sobre sí mismo.</p>
+    <p><strong>Valores posibles:</strong> mₛ = +1/2 (↑ espín arriba) o −1/2 (↓ espín abajo)</p>
+    <div class="key-fact"><p><strong>Principio de exclusión de Pauli:</strong> No pueden existir dos electrones en el mismo átomo con los mismos cuatro números cuánticos. Un orbital solo puede contener 2 electrones, y deben tener espines opuestos.</p></div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">🎯</span>Resumen: ¿Cómo identificar un orbital?</h3>
+    <p>El conjunto (n, l, mₗ, mₛ) identifica un electrón específico. Ejemplos del Taller N°8:</p>
+    <table class="chem-table">
+      <tr><th>Conjunto (n,l,mₗ,mₛ)</th><th>Orbital</th><th>Descripción</th></tr>
+      <tr><td>(3, 1, 0, −1/2)</td><td>3p</td><td>3er nivel, subnivel p, orbital pz, espín abajo</td></tr>
+      <tr><td>(3, 1, 1, +1/2)</td><td>3p</td><td>3er nivel, subnivel p, orbital p+1, espín arriba</td></tr>
+      <tr><td>(2, 0, 0, −1/2)</td><td>2s</td><td>2do nivel, subnivel s, único orbital s, espín abajo</td></tr>
+      <tr><td>(3, 2, −2, −1/2)</td><td>3d</td><td>3er nivel, subnivel d, primer orbital d, espín abajo</td></tr>
+    </table>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Pregunta de práctica</div>
+    <div class="quiz-q">¿Cuántos orbitales tienen la designación n = 3 en total?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Para n=3, hay subniveles 3s (l=0), 3p (l=1) y 3d (l=2). Cuéntalos bien.')">5 orbitales</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Cerca, pero no. 3s=1, 3p=3, 3d=5.')">7 orbitales</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! 3s = 1 orbital, 3p = 3 orbitales, 3d = 5 orbitales → total 9 orbitales.')">9 orbitales</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Para n=3 aún no hay subnivel f (f requiere n≥4).')">16 orbitales</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Pregunta de práctica</div>
+    <div class="quiz-q">¿Cuál de estas notaciones orbitales es INCORRECTA?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','4f es correcto: para n=4, l puede ser 0,1,2,3 → l=3 corresponde a f.')">4f</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! 1p es imposible: para n=1, solo l=0 (solo existe 1s). No puede haber l=1 con n=1.')">1p</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','9s es correcto (aunque inusual): para n=9, l puede ser 0 → subnivel 9s válido.')">9s</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','7d es correcto: para n=7, l puede ser 0,1,2 → l=2 corresponde a d.')">7d</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+</div>
+
+<!-- ===== CONFIG ELECTRONICA ===== -->
+<div class="topic-section" id="section-config">
+  <div class="section-intro">
+    <div class="section-tag">Lección 2.2 · T5.3 · T5.4 · T8</div>
+    <div class="section-title">Configuración Electrónica</div>
+    <p class="section-desc">La configuración electrónica dice cómo se distribuyen los electrones en los orbitales de un átomo. Es la "dirección" completa de todos los electrones.</p>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">📋</span>Las 3 reglas que gobiernan todo</h3>
+    
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>Regla 1: Principio de Aufbau (Construcción)</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>Los electrones se llenan de <strong>menor a mayor energía</strong>. El orden no es tan simple como 1s, 2s, 2p, 3s... porque la energía de los subniveles se cruza.</p>
+        <p><strong>Orden de llenado:</strong></p>
+        <div class="formula">1s → 2s → 2p → 3s → 3p → 4s → 3d → 4p → 5s → 4d → 5p → 6s → 4f → 5d → 6p → 7s → 5f → 6d</div>
+        <div class="memory-trick">
+          <div class="memory-label">💡 Truco diagonal de Moeller</div>
+          <p>Escribe los subniveles en filas y sigue las diagonales de arriba-derecha a abajo-izquierda:<br>
+          <strong>1s / 2s 2p / 3s 3p 3d / 4s 4p 4d 4f...</strong> y los lees siguiendo diagonales.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>Regla 2: Principio de Exclusión de Pauli</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>Un orbital puede contener <strong>máximo 2 electrones</strong>, y si los tiene, sus espines deben ser opuestos (uno ↑ y uno ↓).</p>
+        <div class="analogy">
+          <div class="analogy-label">🧠 Analogía</div>
+          <p>Un cuarto de hotel (orbital) tiene dos camas (espines). Solo pueden dormir 2 personas, y para diferenciarse, uno duerme boca arriba y otro boca abajo.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>Regla 3: Regla de Hund</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <p>Cuando hay varios orbitales de igual energía (orbitales degenerados, como los 3 orbitales p), los electrones se distribuyen <strong>uno por orbital</strong> antes de empezar a parear, y todos con el mismo espín (+1/2 primero).</p>
+        <div class="analogy">
+          <div class="analogy-label">🧠 Analogía del autobús</div>
+          <p>En un bus con filas de 2 asientos, los pasajeros primero ocupan una silla de cada fila antes de sentarse de a dos. ¡Nadie quiere compartir si hay silla sola!</p>
+        </div>
+        <p>Resultado: mayor número de electrones <strong>no apareados</strong> → mayor <strong>paramagnetismo</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">✏</span>Cómo escribir una configuración electrónica — paso a paso</h3>
+    <p>Ejemplo: <strong>Nitrógeno (N, Z=7)</strong></p>
+    <ul class="steps">
+      <li><span class="step-num">1</span><p>Mira el número atómico: Z=7 → hay 7 electrones para distribuir.</p></li>
+      <li><span class="step-num">2</span><p>Sigue el orden de Aufbau: 1s² → 2s² → 2p³</p></li>
+      <li><span class="step-num">3</span><p>Verifica: 2+2+3 = 7 ✓</p></li>
+      <li><span class="step-num">4</span><p>Configuración: <strong>1s² 2s² 2p³</strong></p></li>
+      <li><span class="step-num">5</span><p>Los 3 electrones en 2p se distribuyen uno por orbital (Regla de Hund): ↑ en p₋₁, ↑ en p₀, ↑ en p₊₁ → <strong>3 e⁻ no apareados → paramagnético por 3 e⁻</strong></p></li>
+    </ul>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">[]</span>Configuración simplificada (abreviada)</h3>
+    <p>Para elementos pesados, se usa el gas noble anterior como base. Se escribe [gas noble] + electrones adicionales.</p>
+    <p>Ejemplo: <strong>Hierro (Fe, Z=26)</strong></p>
+    <div class="formula">[Ar] 4s² 3d⁶</div>
+    <p>El Ar tiene Z=18, entonces los 8 electrones restantes (26−18=8) se distribuyen: 4s² 3d⁶</p>
+    <div class="warning-box"><p>⚠ <strong>Configuraciones anómalas:</strong> Cr (Z=24) = [Ar] 4s¹ 3d⁵ y Cu (Z=29) = [Ar] 4s¹ 3d¹⁰. Tienen mayor estabilidad cuando d está <em>medio lleno</em> (d⁵) o <em>completamente lleno</em> (d¹⁰), tomando un e⁻ del 4s.</p></div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">🧲</span>Paramagnetismo vs. Diamagnetismo</h3>
+    <p><strong>Paramagnético:</strong> tiene electrones NO apareados. El átomo es atraído por un campo magnético externo. Cuantos más e⁻ no apareados, más paramagnético.</p>
+    <p><strong>Diamagnético:</strong> todos los electrones están apareados. El átomo es ligeramente repelido por un campo magnético.</p>
+    <table class="chem-table">
+      <tr><th>Elemento</th><th>Config.</th><th>e⁻ no apareados</th><th>Magnetismo</th></tr>
+      <tr><td>He (Z=2)</td><td>1s²</td><td>0</td><td>Diamagnético</td></tr>
+      <tr><td>N (Z=7)</td><td>1s²2s²2p³</td><td>3</td><td>Paramagnético ×3</td></tr>
+      <tr><td>Fe (Z=26)</td><td>[Ar]4s²3d⁶</td><td>4</td><td>Paramagnético ×4</td></tr>
+      <tr><td>Mn (Z=25)</td><td>[Ar]4s²3d⁵</td><td>5</td><td>Paramagnético ×5 (máximo en 3d)</td></tr>
+    </table>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Pregunta de práctica</div>
+    <div class="quiz-q">¿Cuál es la configuración electrónica del Magnesio (Z=12)?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','1s²2s²2p⁶ solo tiene 10 electrones (es Ne). Faltan 2.')">1s²2s²2p⁶</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! 2+2+6+2=12 e⁻ ✓. Mg es diamagnético (todos apareados).')">1s²2s²2p⁶3s²</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','El electrón 12 va en 3s, no en 2p. 2p solo puede tener máximo 6 e⁻.')">1s²2s²2p⁸</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+</div>
+
+<!-- ===== TABLA PERIODICA ===== -->
+<div class="topic-section" id="section-tabla">
+  <div class="section-intro">
+    <div class="section-tag">Lección 2.3 · T6.1 · T10</div>
+    <div class="section-title">Tabla Periódica</div>
+    <p class="section-desc">La tabla periódica es la "foto grupal" de todos los elementos, organizados de forma que elementos con propiedades similares quedan en la misma columna.</p>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">📜</span>Historia: de Mendeleev a hoy</h3>
+    <p><strong>Mendeleev (1869):</strong> Ordenó los 63 elementos conocidos por <strong>masa atómica creciente</strong>. Su genialidad fue dejar espacios vacíos para elementos aún no descubiertos (predicó propiedades del Ga, Ge y Sc antes de que se descubrieran). Éxito enorme: sus predicciones se cumplieron.</p>
+    <div class="key-fact"><p><strong>Ley Periódica de Mendeleev:</strong> "Las propiedades de los elementos son una función periódica de sus masas atómicas."</p></div>
+    <p><strong>Tabla periódica moderna (Moseley, 1913):</strong> Ordenó por <strong>número atómico (Z)</strong> en vez de masa atómica, resolviendo inconsistencias. Hoy: "Las propiedades de los elementos son una función periódica de sus números atómicos."</p>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">🗺</span>Organización actual de la Tabla Periódica</h3>
+    <p><strong>Periodos (filas horizontales):</strong> 7 periodos. Indican el número de niveles de energía (n) del elemento. Todos los elementos del periodo 3 tienen 3 niveles de energía.</p>
+    <p><strong>Grupos (columnas verticales):</strong> 18 grupos. Los elementos de un grupo tienen el <strong>mismo número de electrones de valencia</strong> → propiedades físicas y químicas similares.</p>
+    
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>Grupos especiales y sus nombres</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <table class="chem-table">
+          <tr><th>Grupo</th><th>Nombre</th><th>e⁻ de valencia</th><th>Característica</th></tr>
+          <tr><td>1 (excepto H)</td><td>Metales alcalinos</td><td>1</td><td>Muy reactivos, forman M⁺</td></tr>
+          <tr><td>2</td><td>Metales alcalinotérreos</td><td>2</td><td>Reactivos, forman M²⁺</td></tr>
+          <tr><td>3-12</td><td>Metales de transición</td><td>Variable (d)</td><td>Configuraciones d, varios estados ox.</td></tr>
+          <tr><td>13</td><td>Grupo del Boro</td><td>3</td><td>—</td></tr>
+          <tr><td>14</td><td>Grupo del Carbono</td><td>4</td><td>—</td></tr>
+          <tr><td>15</td><td>Pnicógenos / Grupo N</td><td>5</td><td>—</td></tr>
+          <tr><td>16</td><td>Calcógenos</td><td>6</td><td>—</td></tr>
+          <tr><td>17</td><td>Halógenos</td><td>7</td><td>Muy reactivos, forman X⁻</td></tr>
+          <tr><td>18</td><td>Gases nobles</td><td>8 (o 2 el He)</td><td>Inertes, diamagnéticos</td></tr>
+        </table>
+        <p>Las filas separadas abajo son las <strong>tierras raras</strong>: lantánidos (4f) y actínidos (5f).</p>
+      </div>
+    </div>
+
+    <div class="collapsible">
+      <div class="coll-header" onclick="toggleColl(this)">
+        <span>Bloques de la Tabla Periódica (s, p, d, f)</span>
+        <span class="coll-arrow">▶</span>
+      </div>
+      <div class="coll-body">
+        <table class="chem-table">
+          <tr><th>Bloque</th><th>Grupos</th><th>Último e⁻ en...</th><th>Tipo</th></tr>
+          <tr><td>s</td><td>1 y 2</td><td>subnivel s</td><td>Metales alcalinos y alcalinotérreos</td></tr>
+          <tr><td>p</td><td>13-18</td><td>subnivel p</td><td>No metales, metaloides, gases nobles</td></tr>
+          <tr><td>d</td><td>3-12</td><td>subnivel d</td><td>Metales de transición</td></tr>
+          <tr><td>f</td><td>Lantánidos/Actínidos</td><td>subnivel f</td><td>Metales de transición interna</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">⚗</span>Metales, No Metales y Metaloides</h3>
+    
+    <div class="two-col">
+      <div style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);border-radius:10px;padding:0.75rem;">
+        <p style="color:#93c5fd;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.4rem;">⚙ Metales (~80%)</p>
+        <p style="font-size:0.8rem;color:var(--text2);line-height:1.7;">
+          • Brillo metálico<br>
+          • Buenos conductores de calor y electricidad<br>
+          • Maleables y dúctiles<br>
+          • Sólidos a T.A. (excepto Hg)<br>
+          • Forman cationes (pierden e⁻)
+        </p>
+      </div>
+      <div style="background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.2);border-radius:10px;padding:0.75rem;">
+        <p style="color:#67e8f9;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.4rem;">🔵 No Metales</p>
+        <p style="font-size:0.8rem;color:var(--text2);line-height:1.7;">
+          • Malos conductores<br>
+          • Frágiles (estado sólido)<br>
+          • Pueden ser gas, líquido o sólido a T.A.<br>
+          • Forman aniones (ganan e⁻)<br>
+          • Mayor electronegatividad
+        </p>
+      </div>
+    </div>
+
+    <div style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);border-radius:10px;padding:0.75rem;margin-top:0.75rem;">
+      <p style="color:#c4b5fd;font-family:'Syne',sans-serif;font-weight:700;margin-bottom:0.4rem;">🔮 Metaloides (semimetales)</p>
+      <p style="font-size:0.8rem;color:var(--text2);line-height:1.7;">B, Si, Ge, As, Sb, Te, Po, At. Propiedades intermedias entre metales y no metales. <strong>Semiconductores</strong> → fundamentales en electrónica moderna (chips, paneles solares). El Si es el más importante.</p>
+    </div>
+    <div class="key-fact"><p><strong>Carácter metálico:</strong> aumenta hacia abajo y hacia la izquierda en la T.P. El metal más activo naturalmente es el Cs (o Fr). El no metal más activo es el F.</p></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Pregunta de práctica</div>
+    <div class="quiz-q">Un elemento está en el periodo 4, grupo 2. ¿Cuántos niveles de energía tiene y cuántos electrones de valencia?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','El periodo indica niveles de energía, el grupo indica electrones de valencia.')">2 niveles, 4 electrones de valencia</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Exacto! Periodo 4 = 4 niveles de energía. Grupo 2 = 2 electrones de valencia. Es el Ca (Z=20).')">4 niveles, 2 electrones de valencia</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Los grupos 3-12 son metales de transición, no necesariamente este caso.')">4 niveles, 10 electrones de valencia</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+</div>
+
+<!-- ===== PROPIEDADES PERIODICAS ===== -->
+<div class="topic-section" id="section-propiedades">
+  <div class="section-intro">
+    <div class="section-tag">Lección 2.3 · T6.4 · T6.5 · T6.6</div>
+    <div class="section-title">Propiedades Periódicas</div>
+    <p class="section-desc">Estas propiedades siguen tendencias predecibles en la tabla periódica. Si entiendes la lógica detrás de cada tendencia, puedes deducirlas sin memorizar.</p>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">🔑</span>Concepto clave: Carga Nuclear Efectiva (Z*)</h3>
+    <p>El electrón de valencia no "siente" todo el atractivo del núcleo porque los electrones internos lo <strong>apantallan</strong> (lo "protegen"). La carga nuclear efectiva es la carga que realmente siente el electrón de valencia.</p>
+    <div class="formula">Z* = Z − σ  (donde σ = número de electrones internos que apantallan)</div>
+    <div class="analogy">
+      <div class="analogy-label">🧠 Analogía</div>
+      <p>Imagina que el núcleo es el sol y los electrones de valencia son planetas. Los electrones internos son como una nube entre el sol y los planetas que bloquea parte del calor (atracción). Mayor Z* = planeta se siente más atraído = orbital más pequeño.</p>
+    </div>
+    <p>Yendo hacia la <strong>derecha en un periodo</strong>: Z aumenta, los e⁻ internos no cambian → Z* aumenta → mayor atracción nuclear sobre los e⁻ de valencia.</p>
+  </div>
+
+  <div class="trend-grid">
+    <div class="trend-card tc-size">
+      <div class="prop-name">Tamaño Atómico (radio)</div>
+      <div class="arrow-row">⬇ periodo ↑ | → grupo ↓</div>
+      <div class="trend-desc">
+        <strong>↓ en un periodo (→):</strong> Mayor Z* → el núcleo atrae más fuerte → orbitales se contraen.<br>
+        <strong>↑ en un grupo (↓):</strong> Se agrega un nivel de energía nuevo → átomo más grande.
+      </div>
+    </div>
+    <div class="trend-card tc-ie">
+      <div class="prop-name">Energía de Ionización (EI)</div>
+      <div class="arrow-row">↑ periodo → | ↓ grupo ↓</div>
+      <div class="trend-desc">
+        Energía necesaria para arrancar un e⁻. Mayor Z* → más difícil arrancar e⁻ → mayor EI.<br>
+        <strong>→ en periodo:</strong> EI aumenta. <strong>↓ en grupo:</strong> EI disminuye.
+      </div>
+    </div>
+    <div class="trend-card tc-en">
+      <div class="prop-name">Electronegatividad (EN)</div>
+      <div class="arrow-row">↑ periodo → | ↓ grupo ↓</div>
+      <div class="trend-desc">
+        Tendencia a atraer electrones en un enlace. <strong>F es el más electronegativo</strong> (EN=4.0).<br>
+        Aumenta → en periodo, disminuye ↓ en grupo.
+      </div>
+    </div>
+    <div class="trend-card tc-ae">
+      <div class="prop-name">Afinidad Electrónica (AE)</div>
+      <div class="arrow-row">↑ (más neg.) periodo →</div>
+      <div class="trend-desc">
+        Energía liberada al ganar un e⁻. Más negativa = mayor tendencia a ganar e⁻.<br>
+        Los halógenos tienen la mayor AE. Los gases nobles tienen AE ~0.
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">⚡</span>Energía de Ionización — detalles críticos</h3>
+    <p>La <strong>primera energía de ionización (EI₁)</strong> es la energía para remover el primer e⁻ de un átomo en estado gaseoso:</p>
+    <div class="formula">X(g) + Energía → X⁺(g) + e⁻</div>
+    <p>La <strong>segunda energía de ionización (EI₂)</strong> es para remover el segundo e⁻ del catión X⁺. Siempre EI₂ > EI₁ porque el ion ya tiene carga positiva y atrae más fuerte los e⁻ restantes.</p>
+    <div class="warning-box"><p>⚠ <strong>Excepciones en la tendencia del periodo:</strong> Al comparar Be→B y N→O hay "caídas" en la EI porque romper un subnivel lleno (Be: 2s²) o semilleno (N: 2p³) cuesta más. <strong>Esto puede caer en el parcial.</strong></p></div>
+    <div class="key-fact">
+      <p><strong>Tendencia general de primeras EI:</strong> Li &lt; Be &lt; B &lt; C &lt; N &gt; O &lt; F &lt; Ne</p>
+      <p>Nota las dos "caídas": B (rompe 2p¹) y O (aparea en 2p, repulsión).</p>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">🔋</span>Configuración electrónica de iones</h3>
+    <p><strong>Cationes (pierde e⁻):</strong> Se remueven primero los e⁻ del nivel más externo (mayor n). Para metales de transición, se remueven los e⁻ del 4s antes que los del 3d.</p>
+    <p>Ejemplo: Fe (Z=26) → Fe³⁺</p>
+    <div class="formula">Fe: [Ar] 4s² 3d⁶ → Fe³⁺: [Ar] 3d⁵ (pierde 4s² y un 3d)</div>
+    <p><strong>Aniones (gana e⁻):</strong> Se agregan e⁻ al subnivel de menor energía disponible.</p>
+    <p>Ejemplo: O (Z=8) → O²⁻</p>
+    <div class="formula">O: 1s² 2s² 2p⁴ → O²⁻: 1s² 2s² 2p⁶ (isoelectrónico con Ne)</div>
+    <div class="key-fact"><p><strong>Isoelectrónico:</strong> Species con el mismo número de electrones. Ejemplo: Na⁺, Ne, F⁻, O²⁻, Mg²⁺ son todos isoelectrónicos (10 e⁻ cada uno).</p></div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">☢</span>Radioactividad (T2.2)</h3>
+    <p>Los núcleos inestables emiten radiación para volverse más estables. Tipos principales:</p>
+    <table class="chem-table">
+      <tr><th>Tipo</th><th>Partícula</th><th>Símbolo</th><th>Efecto en Z / A</th><th>Penetración</th></tr>
+      <tr><td>Alfa (α)</td><td>Núcleo de He</td><td>⁴₂He</td><td>Z−2, A−4</td><td>Baja (papel)</td></tr>
+      <tr><td>Beta (β)</td><td>Electrón</td><td>⁰₋₁e</td><td>Z+1, A igual</td><td>Media (aluminio)</td></tr>
+      <tr><td>Gamma (γ)</td><td>Fotón</td><td>⁰₀γ</td><td>Sin cambio</td><td>Alta (plomo)</td></tr>
+    </table>
+    <p>El <strong>protón</strong> y el <strong>neutrón</strong> están en el núcleo. Z = # protones = # electrones (átomo neutro). A = Z + N (N = neutrones).</p>
+    <div class="key-fact"><p><strong>Isótopos:</strong> Átomos del mismo elemento (mismo Z) con diferente número de neutrones (diferente A). Ejemplo: ³⁵Cl y ³⁷Cl → mismo Z=17, diferente N.</p></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Pregunta de práctica</div>
+    <div class="quiz-q">Comparando Na y Cl (mismo periodo 3), ¿cuál tiene mayor energía de ionización y por qué?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Na tiene Z=11 y solo 1 e⁻ de valencia. Cl tiene Z=17 y 7 e⁻ de valencia.')">Na, porque es un metal</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! Cl tiene Z=17 vs Na con Z=11. En el mismo periodo, mayor Z → mayor Z* → mayor atracción → más difícil remover e⁻.')">Cl, porque tiene mayor Z y mayor Z*</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Tienen el mismo n=3 (mismo periodo), pero eso no significa la misma EI.')">Son iguales porque están en el mismo periodo</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Pregunta de práctica</div>
+    <div class="quiz-q">¿Cuál de estos iones es isoelectrónico con el Kr (Z=36)?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Br⁻ tiene 36 e⁻ y Rb⁺ tiene 36 e⁻. Ambos son isoelectrónicos con Kr.')">Solo Br⁻</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Rb⁺ (Z=37, pierde 1 e⁻ → 36 e⁻) y Br⁻ (Z=35, gana 1 e⁻ → 36 e⁻). Ambos tienen 36 e⁻.')">Solo Rb⁺</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Exacto! Br⁻ (35+1=36 e⁻) y Rb⁺ (37-1=36 e⁻) son ambos isoelectrónicos con Kr (36 e⁻).')">Br⁻ y Rb⁺</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+</div>
+
+<!-- ===== RELACIONES DE MASA ===== -->
+<div class="topic-section" id="section-masas">
+  <div class="section-intro">
+    <div class="section-tag">Lección 2.1 · Taller N°6</div>
+    <div class="section-title">Relaciones de Masa</div>
+    <p class="section-desc">El mol es el puente entre el mundo de los átomos (demasiado pequeños para pesar) y el laboratorio (gramos que sí podemos medir).</p>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">⚖</span>Masa atómica y masa atómica promedio</h3>
+    <p>Los elementos tienen <strong>isótopos</strong>: átomos del mismo elemento con diferente número de neutrones. La masa atómica en la tabla periódica es un <strong>promedio ponderado</strong> de todos los isótopos según su abundancia natural.</p>
+    <div class="formula">Masa atómica promedio = Σ (masa isotopo_i × abundancia_i)</div>
+    <p>Por eso el boro aparece como 10.81 en la T.P. aunque ningún átomo de B tiene exactamente esa masa (sus isótopos son ¹⁰B y ¹¹B).</p>
+    <div class="key-fact"><p>Si la masa atómica promedio está más cerca de un isótopo → ese isótopo es más abundante. ³⁵Cl (34.97 uma) vs. ³⁷Cl (36.97 uma). Masa promedio del Cl = 35.45 → el ³⁵Cl es más abundante.</p></div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">🔢</span>El mol y el Número de Avogadro</h3>
+    <p>Un <strong>mol</strong> es simplemente un número: <strong>6.022 × 10²³</strong> (Número de Avogadro, Nₐ).</p>
+    <div class="analogy">
+      <div class="analogy-label">🧠 Analogía</div>
+      <p>Al igual que "una docena" = 12 cosas, "un mol" = 6.022×10²³ cosas. La diferencia es que los átomos son tan pequeños que necesitamos este número gigante para tener una cantidad manejable en el laboratorio.</p>
+    </div>
+    <p>La <strong>masa molar</strong> (M) es la masa de 1 mol de átomos o moléculas. Numéricamente igual a la masa atómica, pero en g/mol.</p>
+    <div class="formula">n (mol) = m (g) / M (g/mol)</div>
+    <div class="formula">N (átomos) = n × Nₐ = (m/M) × 6.022×10²³</div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">📐</span>Fórmulas empíricas y moleculares</h3>
+    <p><strong>Fórmula empírica:</strong> Relación más simple de átomos (razón de enteros más pequeña).</p>
+    <p><strong>Fórmula molecular:</strong> Número real de átomos en la molécula = n × fórmula empírica.</p>
+    <p><strong>Composición porcentual en masa:</strong></p>
+    <div class="formula">% elemento = (masa total del elemento en 1 mol / masa molar compuesto) × 100</div>
+    <ul class="steps">
+      <li><span class="step-num">1</span><p>Determina moles de cada elemento a partir del % (asumiendo 100 g de muestra).</p></li>
+      <li><span class="step-num">2</span><p>Divide todos por el menor número de moles.</p></li>
+      <li><span class="step-num">3</span><p>Si no son enteros, multiplica por el factor necesario.</p></li>
+      <li><span class="step-num">4</span><p>Esa es la fórmula empírica. Para la molecular, divide la masa molar real por la masa de la fórmula empírica.</p></li>
+    </ul>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Problema del Taller N°6</div>
+    <div class="quiz-q">El Mg tiene 3 isótopos: ²⁴Mg (23.985 uma, 78.99%), ²⁵Mg (24.986 uma, 10.00%), ²⁶Mg (25.983 uma, 11.01%). ¿Cuál es la masa atómica promedio?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','No es el promedio simple de las masas. Hay que ponderar por abundancia.')">24.65 uma</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! (23.985×0.7899) + (24.986×0.1000) + (25.983×0.1101) = 18.946 + 2.499 + 2.861 = 24.305 uma')">24.31 uma</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Ese sería si solo hubiera ²⁴Mg. Hay que incluir todos los isótopos.')">23.99 uma</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+</div>
+
+<!-- ===== REPASO FINAL ===== -->
+<div class="topic-section" id="section-quiz-final">
+  <div class="section-intro">
+    <div class="section-tag">Repaso General · Todos los temas</div>
+    <div class="section-title">🎯 Repaso General del Parcial</div>
+    <p class="section-desc">Preguntas integradas de todos los temas. ¡El parcial combinará conceptos de distintas lecciones!</p>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Integración de conceptos</div>
+    <div class="quiz-q">El elemento con configuración [Ar] 4s² 3d¹⁰ en su capa más externa... ¿a qué bloque pertenece y qué grupo es?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! 3d¹⁰ lleno → bloque d (metal de transición). El último e⁻ va en 3d → grupo 12 (Zn, Z=30).')">Bloque d, Grupo 12 (es el Zinc)</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','El bloque p sería si el último e⁻ estuviera en un subnivel p.')">Bloque p, Grupo 12</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','El bloque s solo incluye grupos 1 y 2.')">Bloque s, Grupo 2</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Prop. periódicas</div>
+    <div class="quiz-q">Ordena de MENOR a MAYOR radio atómico: Na, K, Mg, Al (todos en periodo 3 excepto K)</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','K está en periodo 4, así que es el más grande. Dentro del periodo 3, el radio disminuye al aumentar Z.')">Al &lt; Mg &lt; Na &lt; K ✓ pero de mayor a menor</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! Al (Z=13) &lt; Mg (Z=12) &lt; Na (Z=11): en el periodo 3, a mayor Z, menor radio. K (periodo 4) es el más grande de todos.')">Al &lt; Mg &lt; Na &lt; K</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Na tiene menor Z que Mg, así que Na es más grande que Mg (mismo periodo).')">K &lt; Na &lt; Mg &lt; Al</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Números cuánticos</div>
+    <div class="quiz-q">Para el orbital 3d⁵ (siguiendo la convención del taller), ¿cuáles son los números cuánticos del último electrón?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','Para 3d⁵: n=3, l=2. Los 5 orbitales d tienen mₗ = -2,-1,0,+1,+2. El 5to electrón va en mₗ=+2.')">n=3, l=2, mₗ=0, mₛ=+1/2</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! 3d⁵: se llenan los 5 orbitales (mₗ= -2,-1,0,+1,+2) uno por uno con mₛ=+1/2. El último e⁻ (5to) queda en mₗ=+2, mₛ=+1/2.')">n=3, l=2, mₗ=+2, mₛ=+1/2</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','El subnivel d tiene l=2, no l=1.')">n=3, l=1, mₗ=+2, mₛ=+1/2</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="quiz-block">
+    <div class="quiz-label">✦ Integración T.P. + Electrones</div>
+    <div class="quiz-q">Un elemento representativo paramagnético tiene 6 e⁻ de valencia y el último electrón tiene números cuánticos (5, 1, -1, -1/2). ¿En qué periodo está?</div>
+    <div class="quiz-options">
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','n=5 indica periodo 5, no periodo 4.')">Periodo 4</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'correct','¡Correcto! n=5 → periodo 5. Bloque p (l=1), 6 e⁻ de valencia → grupo 16. Es el Teluro (Te, Z=52). Paramagnético por 2 e⁻ no apareados.')">Periodo 5</button>
+      <button class="quiz-opt" onclick="answerQuiz(this,'wrong','n=5 no corresponde al periodo 6.')">Periodo 6</button>
+    </div>
+    <div class="quiz-feedback"></div>
+  </div>
+
+  <div class="content-block">
+    <h3><span class="icon">📝</span>Conceptos clave para no olvidar en el parcial</h3>
+    <table class="chem-table">
+      <tr><th>Concepto</th><th>Lo esencial</th></tr>
+      <tr><td>Modelos atómicos</td><td>Orden cronológico + qué explicó cada uno + qué falló</td></tr>
+      <tr><td>Números cuánticos</td><td>n (nivel), l (forma/subnivel), mₗ (orientación), mₛ (espín). Rangos de cada uno.</td></tr>
+      <tr><td>Config. electrónica</td><td>Aufbau + Pauli + Hund. Anomalías: Cr y Cu.</td></tr>
+      <tr><td>Paramagnetismo</td><td>e⁻ no apareados = paramagnético; todos apareados = diamagnético</td></tr>
+      <tr><td>T.P. estructura</td><td>Grupos = e⁻ valencia. Periodos = niveles energía. Bloques s,p,d,f.</td></tr>
+      <tr><td>Radio atómico</td><td>↑ bajando grupo (más niveles); ↓ avanzando periodo (mayor Z*)</td></tr>
+      <tr><td>EI y EN</td><td>Opuesto al radio: ↑ avanzando periodo, ↓ bajando grupo</td></tr>
+      <tr><td>Isótopos</td><td>Mismo Z, diferente A. Masa atómica = promedio ponderado.</td></tr>
+      <tr><td>El mol</td><td>6.022×10²³. n = m/M. N = n × Nₐ</td></tr>
+      <tr><td>Isoelectrónicos</td><td>Mismo # e⁻ totales. Ej: Na⁺, Ne, F⁻, O²⁻, Mg²⁺ (todos 10 e⁻)</td></tr>
+    </table>
+  </div>
+  <div class="spacer"></div>
+</div>
+
+</main>
+
+<script>
+function showTopic(id) {
+  document.querySelectorAll('.topic-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('section-'+id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function toggleColl(header) {
+  const arrow = header.querySelector('.coll-arrow');
+  const body = header.nextElementSibling;
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+}
+
+function answerQuiz(btn, result, explanation) {
+  const block = btn.closest('.quiz-block');
+  const opts = block.querySelectorAll('.quiz-opt');
+  const fb = block.querySelector('.quiz-feedback');
+  opts.forEach(o => o.disabled = true);
+  btn.classList.add(result === 'correct' ? 'correct' : 'wrong');
+  fb.textContent = (result === 'correct' ? '✅ ' : '❌ ') + explanation;
+  fb.className = 'quiz-feedback show ' + (result === 'correct' ? 'correct-fb' : 'wrong-fb');
+}
+</script>
+</body>
+</html>
