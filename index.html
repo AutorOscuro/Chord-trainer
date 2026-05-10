@@ -2289,7 +2289,7 @@ input[type=range].time-slider::-moz-range-thumb {
           <div class="songs-empty" id="songs-empty">
             <div class="songs-empty-icon">🎶</div>
             <div>Aún no tienes canciones importadas.</div>
-            <div style="color:var(--text-muted);font-size:0.65rem">Copia el texto de Cifrado Club y pégalo para importar.</div>
+            <div style="color:var(--text-muted);font-size:0.65rem">Copia el cifrado de Cifra Club y pégalo para importar.</div>
             <button class="songs-import-btn" onclick="SongMode.openImport()" style="margin-top:0.5rem">+ IMPORTAR MI PRIMERA CANCIÓN</button>
           </div>
         </div>
@@ -2388,7 +2388,7 @@ input[type=range].time-slider::-moz-range-thumb {
               onchange="SongMode.saveOpenRouterKey(this.value)">
             <button onclick="SongMode.toggleKeyVisibility()" style="background:none;border:none;color:var(--accent);cursor:pointer;font-size:0.8rem" title="Mostrar/ocultar">👁</button>
           </div>
-          <div style="font-size:0.6rem;color:var(--text-muted);margin-top:0.3rem">Gratis en openrouter.ai. Sin pagar, puedes usar Llama 3.</div>
+          <div style="font-size:0.6rem;color:var(--text-muted);margin-top:0.3rem">Gratis en openrouter.ai. La app detecta modelos gratuitos disponibles y prueba fallback automático.</div>
         </div>
 
         <div class="import-tabs">
@@ -2422,7 +2422,7 @@ input[type=range].time-slider::-moz-range-thumb {
         <!-- Tab: Texto -->
         <div id="import-tab-paste" style="display:none">
           <textarea class="import-text-area" id="import-text-input" 
-            placeholder="Pega aquí el texto copiado de Cifrado Club..."></textarea>
+            placeholder="Pega aquí el cifrado copiado de Cifra Club..."></textarea>
           <div class="import-meta-row">
             <input class="import-meta-input" id="import-title-input" type="text" placeholder="Título (opcional)">
             <input class="import-meta-input" id="import-artist-input" type="text" placeholder="Artista (opcional)">
@@ -5225,7 +5225,7 @@ document.addEventListener('DOMContentLoaded', () => App.init());
 
 // ============================================================
 // SONG MODE — Modo Canción
-// Funcionalidades: importar desde Cifrado Club, parsear,
+// Funcionalidades: importar desde Cifra Club, parsear,
 // transposición inteligente, práctica libre, almacenamiento
 // ============================================================
 
@@ -5261,83 +5261,430 @@ const SongMode = (() => {
   }
 
   // ============================================================
-  // API OPENROUTER
+  // API OPENROUTER + IMPORTACIÓN ROBUSTA
   // ============================================================
+  const OPENROUTER_MODELS_CACHE_KEY = 'openrouter_free_models_cache_v2';
+  const OPENROUTER_CACHE_TTL = 6 * 60 * 60 * 1000;
+  const HARD_FALLBACK_MODELS = [
+    'openrouter/free',
+    'google/gemini-2.0-flash-exp:free',
+    'meta-llama/llama-3.1-8b-instruct:free',
+    'qwen/qwen-2.5-7b-instruct:free',
+    'mistralai/mistral-7b-instruct:free',
+    'deepseek/deepseek-chat-v3-0324:free'
+  ];
+
   function getOpenRouterKey() {
-    return localStorage.getItem('openrouter_key') || '';
+    return (localStorage.getItem('openrouter_key') || '').trim();
   }
 
   function saveOpenRouterKey(key) {
-    localStorage.setItem('openrouter_key', key.trim());
-    document.getElementById('openrouter-key-input').value = key.trim();
+    const clean = (key || '').trim();
+    localStorage.setItem('openrouter_key', clean);
+    const input = document.getElementById('openrouter-key-input');
+    if (input) input.value = clean;
   }
 
   function toggleKeyVisibility() {
     const input = document.getElementById('openrouter-key-input');
-    if (input.type === 'password') {
-      input.type = 'text';
-    } else {
-      input.type = 'password';
+    if (!input) return;
+    input.type = input.type === 'password' ? 'text' : 'password';
+  }
+
+  function uniqueList(items) {
+    return Array.from(new Set((items || []).filter(Boolean)));
+  }
+
+  function parseOpenRouterError(response, payloadText, payloadJSON) {
+    const msg = payloadJSON?.error?.message || payloadJSON?.message || payloadText || ('HTTP ' + response.status);
+    if (response.status === 401) return 'API Key inválida o incompleta. Copia la key completa desde openrouter.ai/keys y elimina espacios.';
+    if (response.status === 402) return 'OpenRouter indica saldo/créditos insuficientes o modelo no disponible para tu cuenta.';
+    if (response.status === 403) return 'Acceso denegado. Verifica que la key sea de OpenRouter y que el dominio esté permitido.';
+    if (response.status === 408 || response.status === 504) return 'Timeout del modelo. Se intentará con otro modelo gratuito.';
+    if (response.status === 429) return 'Límite de velocidad excedido. Espera un minuto o prueba de nuevo con otro modelo.';
+    if (response.status === 404 || /no endpoints|not found|model/i.test(msg)) return 'Modelo sin endpoint gratuito disponible ahora: ' + msg;
+    return 'OpenRouter respondió ' + response.status + ': ' + msg;
+  }
+
+  async function getFreeOpenRouterModels() {
+    const cachedRaw = localStorage.getItem(OPENROUTER_MODELS_CACHE_KEY);
+    if (cachedRaw) {
+      try {
+        const cached = JSON.parse(cachedRaw);
+        if (Date.now() - cached.t < OPENROUTER_CACHE_TTL && Array.isArray(cached.models) && cached.models.length) {
+          return uniqueList([...cached.models, ...HARD_FALLBACK_MODELS]);
+        }
+      } catch(e) {}
+    }
+
+    try {
+      const response = await fetch('https://openrouter.ai/api/v1/models', { method: 'GET' });
+      if (!response.ok) throw new Error('No se pudo consultar la lista de modelos gratuitos.');
+      const data = await response.json();
+      const models = (data.data || [])
+        .filter(m => {
+          const promptPrice = Number(m?.pricing?.prompt ?? 1);
+          const completionPrice = Number(m?.pricing?.completion ?? 1);
+          return String(m.id || '').endsWith(':free') || (promptPrice === 0 && completionPrice === 0);
+        })
+        .map(m => m.id);
+      const ordered = rankFreeModels(models);
+      localStorage.setItem(OPENROUTER_MODELS_CACHE_KEY, JSON.stringify({ t: Date.now(), models: ordered }));
+      return uniqueList([...ordered, ...HARD_FALLBACK_MODELS]);
+    } catch(e) {
+      return HARD_FALLBACK_MODELS;
     }
   }
 
-  async function callOpenRouter(prompt, useWebSearch = false) {
+  function rankFreeModels(models) {
+    const priority = ['gemini', 'qwen', 'deepseek', 'llama', 'mistral', 'free'];
+    return [...models].sort((a, b) => {
+      const ai = priority.findIndex(p => a.toLowerCase().includes(p));
+      const bi = priority.findIndex(p => b.toLowerCase().includes(p));
+      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
+    }).slice(0, 10);
+  }
+
+  async function callOpenRouter(prompt, options = {}) {
     const key = getOpenRouterKey();
     if (!key) {
-      throw new Error('Falta la OpenRouter API Key. Pégala en el campo de arriba.');
+      throw new Error('Falta la OpenRouter API Key. Pégala en el campo de arriba. Para texto pegado, la app intentará primero analizar localmente sin IA.');
     }
 
-    const body = {
-      model: 'openrouter/free', // OpenRouter elige el mejor modelo gratuito disponible automáticamente
-      max_tokens: 2048,
-      messages: [{ role: 'user', content: prompt }]
-    };
+    const models = uniqueList(options.models || await getFreeOpenRouterModels());
+    const errors = [];
+    const systemPrompt = `Eres un extractor musical estricto para Chord Gym. Devuelves solo JSON válido. No resumes, no inventas, no traduces símbolos de acordes y no agregas comentarios.`;
 
-    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + key,
-        'HTTP-Referer': window.location.href,
-        'X-Title': 'Chord Gym'
-      },
-      body: JSON.stringify(body)
-    });
+    for (const model of models) {
+      try {
+        const body = {
+          model,
+          temperature: 0.05,
+          max_tokens: 4096,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: prompt }
+          ]
+        };
 
-    if (!response.ok) {
-      const err = await response.json().catch(() => ({}));
-      const msg = err.error?.message || err.message || 'Error ' + response.status;
-      if (response.status === 401) {
-        throw new Error('API Key inválida. Asegúrate de copiarla completa desde openrouter.ai/keys');
+        const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + key,
+            'HTTP-Referer': window.location.href,
+            'X-Title': 'Chord Gym'
+          },
+          body: JSON.stringify(body)
+        });
+
+        const payloadText = await response.text();
+        let payloadJSON = null;
+        try { payloadJSON = JSON.parse(payloadText); } catch(e) {}
+
+        if (!response.ok) {
+          const parsed = parseOpenRouterError(response, payloadText, payloadJSON);
+          errors.push(model + ': ' + parsed);
+          if ([401, 402, 403, 429].includes(response.status)) break;
+          continue;
+        }
+
+        const content = payloadJSON?.choices?.[0]?.message?.content || '';
+        if (!content.trim()) {
+          errors.push(model + ': respuesta vacía.');
+          continue;
+        }
+        return { text: content, model };
+      } catch(e) {
+        errors.push(model + ': ' + (e.message || e));
       }
-      if (response.status === 403) {
-        throw new Error('Acceso denegado (403). Verifica que tu API Key sea de OpenRouter.');
-      }
-      if (response.status === 429) {
-        throw new Error('Límite de velocidad excedido. Espera un minuto y vuelve a intentar.');
-      }
-      throw new Error('Error de OpenRouter: ' + msg);
     }
 
-    const data = await response.json();
-    const text = data.choices?.[0]?.message?.content || '';
-    if (!text) throw new Error('Respuesta vacia de la API');
-    return text;
+    throw new Error('No hubo ningún modelo gratuito usable en este momento. Detalle: ' + errors.slice(0, 3).join(' | '));
   }
 
   function extractJSON(text) {
-    // Opción A: bloque markdown ```json ... ```
-    const mdMatch = text.match(/```(?:json)?\s*([\s\S]*?)```/);
-    if (mdMatch) { try { return JSON.parse(mdMatch[1].trim()); } catch(e) {} }
-    // Opción B: JSON directo { ... }
-    const jsonMatch = text.match(/\{[\s\S]*"sections"[\s\S]*\}/);
-    if (jsonMatch) { try { return JSON.parse(jsonMatch[0]); } catch(e) {} }
+    if (!text) return null;
+    const cleaned = String(text)
+      .replace(/^\uFEFF/, '')
+      .replace(/[“”]/g, '"')
+      .replace(/[‘’]/g, "'")
+      .trim();
+
+    const mdMatch = cleaned.match(/```(?:json)?\s*([\s\S]*?)```/i);
+    if (mdMatch) {
+      try { return JSON.parse(mdMatch[1].trim()); } catch(e) {}
+    }
+
+    const first = cleaned.indexOf('{');
+    if (first === -1) return null;
+    let depth = 0;
+    let inString = false;
+    let escape = false;
+    for (let i = first; i < cleaned.length; i++) {
+      const ch = cleaned[i];
+      if (escape) { escape = false; continue; }
+      if (ch === '\\') { escape = true; continue; }
+      if (ch === '"') { inString = !inString; continue; }
+      if (inString) continue;
+      if (ch === '{') depth++;
+      if (ch === '}') depth--;
+      if (depth === 0) {
+        const candidate = cleaned.slice(first, i + 1);
+        try { return JSON.parse(candidate); } catch(e) { break; }
+      }
+    }
+
+    const loose = cleaned.match(/\{[\s\S]*"sections"[\s\S]*\}/);
+    if (loose) {
+      try { return JSON.parse(loose[0]); } catch(e) {}
+    }
     return null;
+  }
+
+  function normalizeSectionName(name, index = 0) {
+    const raw = String(name || '').trim();
+    if (!raw) return index === 0 ? 'INTRO' : 'SECCIÓN ' + (index + 1);
+    const n = raw
+      .replace(/primeira parte|1ª parte|verso|verse|estrofa/i, 'ESTROFA')
+      .replace(/segunda parte|2ª parte/i, 'ESTROFA')
+      .replace(/pré[-\s]?refr[aã]o|pre[-\s]?refr[aã]o|pré[-\s]?coro|pre[-\s]?coro/i, 'PRE-CORO')
+      .replace(/refr[aã]o|chorus/i, 'CORO')
+      .replace(/ponte|bridge/i, 'PUENTE')
+      .replace(/introdu[cç][aã]o|intro/i, 'INTRO')
+      .replace(/solo/i, 'SOLO')
+      .replace(/final|ending/i, 'FINAL');
+    return n.toUpperCase().replace(/[^A-ZÁÉÍÓÚÑÇ0-9\-\s]/g, '').replace(/\s+/g, ' ').trim() || ('SECCIÓN ' + (index + 1));
+  }
+
+  function normalizeNoteName(note) {
+    if (!note) return '';
+    let n = String(note).trim();
+    const solfege = [
+      [/^(do|dó)$/i, 'C'], [/^(re|ré)$/i, 'D'], [/^mi$/i, 'E'], [/^(fa|fá)$/i, 'F'],
+      [/^sol$/i, 'G'], [/^(la|lá)$/i, 'A'], [/^si$/i, 'B']
+    ];
+    for (const [re, val] of solfege) if (re.test(n)) return val;
+    return n.charAt(0).toUpperCase() + n.slice(1);
+  }
+
+  function normalizeChord(input) {
+    if (input === undefined || input === null) return null;
+    let c = String(input).trim();
+    if (!c || /^[-–—]+$/.test(c) || /^N\.?C\.?$/i.test(c)) return null;
+
+    c = c
+      .replace(/[♯＃]/g, '#')
+      .replace(/[♭]/g, 'b')
+      .replace(/\b(sustenido|sostenido|sharp)\b/gi, '#')
+      .replace(/\b(bemol|bémol|b[ée]molo|flat)\b/gi, 'b')
+      .replace(/\b(din[aâ]mico|dinámico|dynamic)\b/gi, '')
+      .replace(/\s+/g, '')
+      .replace(/[,;]+$/g, '');
+
+    c = c.replace(/menor|minor/gi, 'm')
+      .replace(/maior|mayor|major/gi, '')
+      .replace(/s[ée]tima|s[ée]ptima|septima|setima/gi, '7');
+
+    if (c.includes('/')) {
+      const parts = c.split('/');
+      if (parts.length !== 2) return null;
+      const left = normalizeChord(parts[0]);
+      const bass = normalizeChord(parts[1]);
+      if (!left || !bass) return left || null;
+      const bassRoot = bass.match(/^([A-G][#b]?)/)?.[1];
+      return bassRoot ? left + '/' + bassRoot : left;
+    }
+
+    const solfegeRoot = c.match(/^(do|dó|re|ré|mi|fa|fá|sol|la|lá|si)([#b]?)(.*)$/i);
+    if (solfegeRoot) {
+      c = normalizeNoteName(solfegeRoot[1]) + solfegeRoot[2] + solfegeRoot[3];
+    }
+
+    const m = c.match(/^([A-Ga-g])([#b]?)(.*)$/);
+    if (!m) return null;
+    let root = m[1].toUpperCase() + (m[2] || '');
+    let quality = (m[3] || '')
+      .replace(/Δ/g, 'maj')
+      .replace(/º/g, 'dim')
+      .replace(/°/g, 'dim')
+      .replace(/\+/g, 'aug');
+
+    if (/[^A-Za-z0-9#b()\/\-]/.test(quality)) return null;
+    const normalized = root + quality;
+    if (!/^[A-G][#b]?(?:m|M|maj|min|dim|aug|sus|add|alt|omit|no|[0-9]|[#b()\-])*$/i.test(normalized)) return null;
+    return normalized;
+  }
+
+  function normalizeSong(song, fallback = {}) {
+    if (!song || typeof song !== 'object') return null;
+    const normalized = {
+      title: String(song.title || fallback.title || 'Canción importada').trim(),
+      artist: String(song.artist || fallback.artist || '').trim(),
+      originalKey: normalizeChord(song.originalKey || song.key || fallback.originalKey || 'C') || 'C',
+      url: song.url || fallback.url || '',
+      sections: []
+    };
+
+    (song.sections || []).forEach((section, index) => {
+      const chords = Array.isArray(section?.chords) ? section.chords : [];
+      const normalizedChords = chords.map(normalizeChord).filter(Boolean);
+      if (normalizedChords.length > 0) {
+        normalized.sections.push({ name: normalizeSectionName(section.name, index), chords: normalizedChords });
+      }
+    });
+    return normalized;
   }
 
   function validateSong(song) {
     if (!song || !Array.isArray(song.sections) || song.sections.length === 0) return false;
-    return song.sections.every(s => s.name && Array.isArray(s.chords) && s.chords.length > 0);
+    const total = song.sections.reduce((a, s) => a + (Array.isArray(s.chords) ? s.chords.length : 0), 0);
+    return total > 0 && song.sections.every(s => s.name && Array.isArray(s.chords) && s.chords.every(Boolean));
+  }
+
+  function escapeHTML(value) {
+    return String(value ?? '')
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/\"/g, '&quot;')
+      .replace(/'/g, '&#39;');
+  }
+
+  function looksLikeSectionHeader(line) {
+    return /^\s*(intro|introdu[cç][aã]o|estrofa|verso|verse|primeira parte|segunda parte|pré[-\s]?refr[aã]o|pre[-\s]?refr[aã]o|pré[-\s]?coro|pre[-\s]?coro|refr[aã]o|coro|chorus|ponte|bridge|solo|interl[uú]dio|instrumental|final|ending)\s*[:：\-]?\s*$/i.test(line);
+  }
+
+  function extractChordsFromLine(line) {
+    const cleanedLine = String(line || '')
+      .replace(/[|\[\]{}]/g, ' ')
+      .replace(/[♯＃]/g, '#')
+      .replace(/[♭]/g, 'b');
+    const tokens = cleanedLine.split(/\s+/).map(t => t.trim()).filter(Boolean);
+    if (!tokens.length) return [];
+
+    const chords = [];
+    let validish = 0;
+    tokens.forEach(token => {
+      const stripped = token.replace(/^[:.,;()]+|[:.,;()]+$/g, '');
+      const normalized = normalizeChord(stripped);
+      if (normalized) {
+        chords.push(normalized);
+        validish++;
+      }
+    });
+
+    const ratio = validish / tokens.length;
+    const hasLyricChars = /[áéíóúãõçñ]{2,}|\b(de|do|da|que|eu|tu|mi|me|te|amor|jesus|vida|corazón|cora[cç][aã]o)\b/i.test(cleanedLine);
+    if (chords.length >= 2 && ratio >= 0.45) return chords;
+    if (chords.length === 1 && tokens.length <= 2 && !hasLyricChars) return chords;
+    return [];
+  }
+
+  function parseCifraTextLocal(rawText, fallback = {}) {
+    const raw = String(rawText || '').replace(/\r/g, '');
+    const lines = raw.split('\n').map(l => l.trimEnd());
+    const song = {
+      title: fallback.title || '',
+      artist: fallback.artist || '',
+      originalKey: fallback.originalKey || 'C',
+      url: fallback.url || '',
+      sections: []
+    };
+    let current = null;
+
+    const keyMatch = raw.match(/(?:Tom|Tono|Key|Original Key)\s*[:：]\s*([A-Ga-g](?:#|b)?m?)/i);
+    if (keyMatch) song.originalKey = normalizeChord(keyMatch[1]) || song.originalKey;
+
+    function ensureSection(name) {
+      const normalizedName = normalizeSectionName(name || 'INTRO', song.sections.length);
+      current = { name: normalizedName, chords: [] };
+      song.sections.push(current);
+    }
+
+    lines.forEach((line) => {
+      const clean = line.trim();
+      if (!clean) return;
+      if (/^(tom|tono|key|capotraste|afina[cç][aã]o|tuning)\s*[:：]/i.test(clean)) return;
+      if (looksLikeSectionHeader(clean)) {
+        ensureSection(clean.replace(/[:：\-]\s*$/, ''));
+        return;
+      }
+      const chords = extractChordsFromLine(clean);
+      if (chords.length) {
+        if (!current) ensureSection('INTRO');
+        current.chords.push(...chords);
+      }
+    });
+
+    song.sections = song.sections.filter(s => s.chords.length > 0);
+    return normalizeSong(song, fallback);
+  }
+
+  async function fetchURLAsText(url) {
+    const encoded = encodeURIComponent(url);
+    const normalizedNoProtocol = url.replace(/^https?:\/\//i, '');
+    const candidates = [
+      url,
+      'https://api.allorigins.win/raw?url=' + encoded,
+      'https://r.jina.ai/http://' + normalizedNoProtocol
+    ];
+    const errors = [];
+
+    for (const candidate of candidates) {
+      try {
+        const response = await fetch(candidate, { method: 'GET' });
+        if (!response.ok) {
+          errors.push(response.status + ' en ' + candidate.slice(0, 50));
+          continue;
+        }
+        const text = await response.text();
+        if (text && text.trim().length > 100) return text;
+      } catch(e) {
+        errors.push((e.message || e).slice(0, 80));
+      }
+    }
+    throw new Error('No pude leer la URL directamente desde el navegador. Detalle: ' + errors.slice(0, 2).join(' | '));
+  }
+
+  function buildExtractionPrompt({ mode, query, url, text, title, artist }) {
+    const source = mode === 'paste' ? `TEXTO PEGADO:\n${text}` : mode === 'link' ? `URL DE CIFRA CLUB:\n${url}` : `BÚSQUEDA EN CIFRA CLUB:\n${query}`;
+    return `Actúa como extractor musical puro para canciones de Cifra Club.
+
+OBJETIVO: producir una estructura de acordes 1:1, sin letra, sin resumen y sin inventar progresiones.
+
+FUENTE:
+${source}
+
+SALIDA OBLIGATORIA: responde únicamente JSON válido con esta forma exacta:
+{
+  "title": "${title || 'Título real'}",
+  "artist": "${artist || 'Artista real'}",
+  "originalKey": "C",
+  "url": "${url || ''}",
+  "sections": [
+    { "name": "INTRO", "chords": ["C", "G/B", "Am7", "Fadd9"] }
+  ]
+}
+
+REGLAS MUSICALES ESTRICTAS:
+1. Copia solo acordes reales de la fuente. Si no puedes acceder a la URL o no ves acordes, devuelve sections: [] y no inventes.
+2. Notación permitida: A, B, C, D, E, F, G con # o b. Ejemplos válidos: Bb, F#m, Cadd9, G/B, D7(9), Asus4, Ebmaj7.
+3. Prohibido traducir símbolos o calidades. Mapeo obligatorio: "sustenido"/"sostenido" -> "#"; "bemol"/"bémol"/"bémolo" -> "b"; "menor" -> "m"; "mayor"/"maior" no debe aparecer como palabra; "dinámico"/"dinamico"/"dynamic" está prohibido.
+4. Mantén todas las repeticiones en el orden exacto. Si la fuente dice C G C G, el arreglo debe ser ["C", "G", "C", "G"].
+5. Separa por secciones musicales cuando existan: INTRO, ESTROFA, PRE-CORO, CORO, PUENTE, SOLO, FINAL. No incluyas letra.
+6. No escribas Markdown, no uses bloque de código, no añadas explicación.`;
+  }
+
+  async function importViaAI(prompt, fallback) {
+    const result = await callOpenRouter(prompt);
+    const rawSong = extractJSON(result.text);
+    const song = normalizeSong(rawSong, fallback);
+    if (!validateSong(song)) {
+      throw new Error('La IA no devolvió acordes válidos. Modelo usado: ' + result.model + '. Prueba pegando el texto copiado de Cifra Club para extracción 1:1.');
+    }
+    song.sourceModel = result.model;
+    return song;
   }
 
   // ============================================================
@@ -5346,78 +5693,45 @@ const SongMode = (() => {
   async function searchByName() {
     const query = document.getElementById('import-search-input').value.trim();
     if (!query) return;
-    showStatus('search', 'loading', '🔍 Buscando en Cifrado Club...');
+    showStatus('search', 'loading', 'Buscando con modelos gratuitos de OpenRouter...');
     try {
-      const prompt = `ACTÚA COMO UN EXPERTO EN TRANSCRIPCIÓN MUSICAL.
-Busca en Cifrado Club (cifraclub.com.br) la canción: "${query}".
-
-TU TAREA: Extraer la estructura exacta de acordes.
-FORMATO DE SALIDA: ÚNICAMENTE un objeto JSON puro. Sin explicaciones. Sin texto antes ni después.
-
-JSON ESTRUCTURA:
-{
-  "title": "Título Real",
-  "artist": "Artista Real",
-  "originalKey": "Tono (ej: G#m, Bb, C)",
-  "sections": [
-    { "name": "INTRO", "chords": ["A", "B", "C#m"] },
-    { "name": "ESTROFA", "chords": ["A", "E", "F#m", "D"] }
-  ]
-}
-
-REGLAS CRÍTICAS PARA MODELOS GRATUITOS:
-1. Extrae los acordes REALES de la página, no inventes una progresión genérica.
-2. Usa notación anglosajona (C, D, E, F, G, A, B).
-3. Incluye tensiones y bajos (ej: Cadd9, G/B, Am7).
-4. Divide por secciones: INTRO, ESTROFA, PRE-CORO, CORO, PUENTE, SOLO, FINAL.
-5. NO incluyas la letra de la canción.
-6. Si una sección repite acordes (ej: C G C G), inclúyelos todos en el orden que aparecen.`;
-      const text = await callOpenRouter(prompt, true);
-      const song = extractJSON(text);
-      if (song && validateSong(song)) {
-        song.title = song.title || query;
-        song.originalKey = song.originalKey || 'C';
-        showPreview(song);
-      } else {
-        throw new Error('No se encontraron acordes válidos. Intenta con el nombre exacto o usa la pestaña Texto.');
-      }
+      const prompt = buildExtractionPrompt({ mode: 'name', query });
+      const song = await importViaAI(prompt, { title: query });
+      showPreview(song);
     } catch (e) {
-      showStatus('search', 'error', '⚠️ ' + e.message);
+      showStatus('search', 'error', 'Importación por nombre falló: ' + e.message + ' Consejo: usa la pestaña Link o pega el texto de Cifra Club, que es el método más exacto.');
     }
   }
 
   async function searchByLink() {
     const url = document.getElementById('import-link-input').value.trim();
     if (!url) return;
-    showStatus('search', 'loading', '🔗 Accediendo al enlace...');
-    try {
-      const prompt = `VISITA ESTA URL: ${url}
-Extrae CADA ACORDE de la página de Cifrado Club.
+    if (!/^https?:\/\/(www\.)?cifraclub\.com\.br\//i.test(url)) {
+      showStatus('search', 'error', 'El enlace debe ser una URL válida de Cifra Club: https://www.cifraclub.com.br/...');
+      return;
+    }
 
-REGLAS DE EXTRACCIÓN:
-1. Mantén el orden exacto de los acordes por cada sección.
-2. Identifica las secciones (Intro, Estrofa, Coro, etc).
-3. Devuelve ÚNICAMENTE este JSON, sin texto adicional:
-{
-  "title": "Título",
-  "artist": "Artista",
-  "originalKey": "Tono Original",
-  "sections": [
-    { "name": "SECCIÓN", "chords": ["Acorde1", "Acorde2"] }
-  ]
-}
-4. Usa C, D, E, F, G, A, B. Incluye sostenidos (#) y bemoles (b).
-5. NO inventes acordes, copia los que están en la pantalla de la URL proporcionada.`;
-      const text = await callOpenRouter(prompt, true);
-      const song = extractJSON(text);
-      if (song && validateSong(song)) {
-        song.originalKey = song.originalKey || 'C';
-        showPreview(song);
-      } else {
-        throw new Error('No se pudo procesar el enlace. Verifica que sea una URL de cifraclub.com.br.');
+    showStatus('search', 'loading', 'Leyendo la URL y buscando acordes reales...');
+    try {
+      let fetchedText = '';
+      try {
+        fetchedText = await fetchURLAsText(url);
+        const localSong = parseCifraTextLocal(fetchedText, { title: 'Canción importada', url });
+        if (validateSong(localSong)) {
+          localSong.importMethod = 'url-local-parser';
+          showPreview(localSong);
+          return;
+        }
+      } catch(fetchError) {
+        console.warn('Lectura directa de URL falló:', fetchError);
       }
+
+      showStatus('search', 'loading', 'La lectura directa no encontró acordes suficientes. Probando IA con fallback de modelos...');
+      const prompt = buildExtractionPrompt({ mode: 'link', url, text: fetchedText });
+      const song = await importViaAI(prompt, { title: 'Canción importada', url });
+      showPreview(song);
     } catch (e) {
-      showStatus('search', 'error', '⚠️ ' + e.message);
+      showStatus('search', 'error', 'No se pudo importar el enlace: ' + e.message + ' Solución más fiable: abre Cifra Club, copia todo el cifrado y pégalo en la pestaña Texto.');
     }
   }
 
@@ -5426,34 +5740,27 @@ REGLAS DE EXTRACCIÓN:
     const titleInput = document.getElementById('import-title-input')?.value.trim() || '';
     const artistInput = document.getElementById('import-artist-input')?.value.trim() || '';
     if (!textInput) return;
-    showStatus('search', 'loading', '📋 Analizando texto...');
-    try {
-      const prompt = `El siguiente es texto copiado de una canción de Cifrado Club.
-Extrae los acordes y devuelve ÚNICAMENTE este JSON:
-{
-  "title": "${titleInput || 'Canción'}",
-  "artist": "${artistInput || 'Desconocido'}",
-  "originalKey": "tono original si aparece, si no usa C",
-  "sections": [
-    { "name": "INTRO", "chords": ["C", "G"] }
-  ]
-}
-Acordes en notación anglosajona. Secciones en español. Sin letra.
 
-TEXTO:
-${textInput}`;
-      const text = await callOpenRouter(prompt, false);
-      const song = extractJSON(text);
-      if (song && validateSong(song)) {
-        song.title = song.title || titleInput || 'Canción importada';
-        song.artist = song.artist || artistInput || '';
-        song.originalKey = song.originalKey || 'C';
-        showPreview(song);
-      } else {
-        throw new Error('No se detectaron acordes válidos en el texto.');
+    showStatus('search', 'loading', 'Analizando texto pegado con parser local 1:1...');
+    try {
+      const localSong = parseCifraTextLocal(textInput, {
+        title: titleInput || 'Canción importada',
+        artist: artistInput || '',
+        originalKey: 'C'
+      });
+
+      if (validateSong(localSong)) {
+        localSong.importMethod = 'paste-local-parser';
+        showPreview(localSong);
+        return;
       }
+
+      showStatus('search', 'loading', 'No se detectaron suficientes líneas de acordes. Probando IA como fallback...');
+      const prompt = buildExtractionPrompt({ mode: 'paste', text: textInput, title: titleInput, artist: artistInput });
+      const song = await importViaAI(prompt, { title: titleInput || 'Canción importada', artist: artistInput || '' });
+      showPreview(song);
     } catch (e) {
-      showStatus('search', 'error', '⚠️ ' + e.message);
+      showStatus('search', 'error', 'No se detectaron acordes válidos en el texto: ' + e.message);
     }
   }
 
@@ -5475,7 +5782,7 @@ ${textInput}`;
     document.getElementById('preview-sections').textContent = pendingSong.sections.length + ' secciones';
     document.getElementById('preview-chords').textContent = total + ' acordes';
     document.getElementById('preview-sections-list').innerHTML = pendingSong.sections.map(s =>
-      `<div style="margin-bottom:0.4rem"><strong style="color:var(--accent3);font-family:var(--font-mono);font-size:0.65rem">${s.name}:</strong> <span style="font-family:var(--font-mono);font-size:0.75rem">${s.chords.join(' · ')}</span></div>`
+      `<div style="margin-bottom:0.4rem"><strong style="color:var(--accent3);font-family:var(--font-mono);font-size:0.65rem">${escapeHTML(s.name)}:</strong> <span style="font-family:var(--font-mono);font-size:0.75rem">${escapeHTML(s.chords.join(' · '))}</span></div>`
     ).join('');
   }
 
@@ -5518,9 +5825,9 @@ ${textInput}`;
       card.onclick = () => startPractice(i);
       card.innerHTML = `
         <div class="song-card-info">
-          <div class="song-card-title">${s.title || 'Sin título'}</div>
-          <div class="song-card-artist">${s.artist || ''}</div>
-          <div class="song-card-meta">Tono: ${s.originalKey} · ${s.sections.reduce((a,sec)=>a+sec.chords.length,0)} acordes · ${s.sections.length} secciones</div>
+          <div class="song-card-title">${escapeHTML(s.title || 'Sin título')}</div>
+          <div class="song-card-artist">${escapeHTML(s.artist || '')}</div>
+          <div class="song-card-meta">Tono: ${escapeHTML(s.originalKey)} · ${s.sections.reduce((a,sec)=>a+sec.chords.length,0)} acordes · ${s.sections.length} secciones</div>
         </div>
         <button class="song-delete-btn" onclick="event.stopPropagation(); SongMode.deleteSong(${i})" title="Eliminar">🗑</button>`;
       songsList.appendChild(card);
@@ -5619,7 +5926,7 @@ ${textInput}`;
       const chips = [];
       for (let k = 1; k <= 3; k++) {
         const ni = flatList[cursor + k];
-        if (ni) chips.push(`<div class="player-next-chip next-${k}">${transposeChord(ni.chord, offset, currentKey)}</div>`);
+        if (ni) chips.push(`<div class="player-next-chip next-${k}">${escapeHTML(transposeChord(ni.chord, offset, currentKey))}</div>`);
       }
       previewEl.innerHTML = chips.join('');
     }
@@ -5640,12 +5947,12 @@ ${textInput}`;
 
     current.sections.forEach(sec => {
       html += `<div class="player-section-block">
-        <div class="player-section-header">${sec.name}</div>
+        <div class="player-section-header">${escapeHTML(sec.name)}</div>
         <div class="player-chords-row">`;
       sec.chords.forEach(chord => {
         const cls = globalIdx < cursor ? 'past' : (globalIdx === cursor ? 'current' : 'upcoming');
         const transposed = transposeChord(chord, offset, currentKey);
-        html += `<div class="player-chord-cell ${cls}" id="pcell-${globalIdx}">${transposed}</div>`;
+        html += `<div class="player-chord-cell ${cls}" id="pcell-${globalIdx}">${escapeHTML(transposed)}</div>`;
         globalIdx++;
       });
       html += `</div></div>`;
