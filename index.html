@@ -662,6 +662,77 @@
     .semana-mat-card{padding:14px 16px;border-radius:18px}
     .semana-mat-urgente{border-color:var(--orange)55!important;box-shadow:0 0 0 1px var(--orange)22}
     .semana-prioridad-badge{font-size:.62rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:8px;background:rgba(255,138,61,.2);border:1px solid rgba(255,138,61,.4);color:var(--orange);flex-shrink:0}
+
+    /* ══ NUEVO SISTEMA DE FLUJOS ════════════════════════════════════════════ */
+    /* Contenedor vertical */
+    #flow-list{display:grid;gap:10px}
+
+    /* Tarjeta de flujo vertical */
+    .fcard{border-radius:22px;padding:16px 18px;background:var(--card-bg);border:1px solid var(--stroke);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);box-shadow:var(--shadow-s);transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden}
+    .fcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:3px 0 0 3px}
+    .fcard:active{transform:scale(.99);box-shadow:var(--shadow-s)}
+    .fcard.sv-card{border-color:rgba(255,77,103,.38);box-shadow:0 0 0 1px rgba(255,77,103,.18)}
+
+    /* Top row: dot + name + energy pill */
+    .fcard-top{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+    .fcard-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+    .fcard-name{font-size:.9rem;font-weight:900;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:-.02em}
+    .fcard-epill{font-size:.62rem;font-weight:800;padding:3px 8px;border-radius:999px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.16);flex-shrink:0;color:var(--muted)}
+
+    /* Acción principal */
+    .fcard-action{font-size:1.05rem;font-weight:900;letter-spacing:-.03em;line-height:1.2;margin-bottom:10px;color:var(--text)}
+    .fcard-action span{color:var(--accent2)}
+    .fcard-time{font-size:.78rem;font-weight:800;color:var(--muted2);display:inline-block;margin-right:8px}
+
+    /* Líneas de contexto */
+    .fcard-ctx{font-size:.76rem;color:var(--muted2);line-height:1.4;margin-bottom:3px}
+    .fcard-urgency{font-size:.76rem;font-weight:800;line-height:1.4;margin-bottom:12px}
+
+    /* Why panel — expandible */
+    .fcard-why{overflow:hidden;max-height:0;transition:max-height .28s ease,opacity .22s ease;opacity:0}
+    .fcard-why.open{max-height:200px;opacity:1}
+    .fcard-why-inner{padding:10px 12px;background:rgba(255,255,255,.05);border-radius:12px;margin-bottom:10px;font-size:.8rem;line-height:1.55;color:rgba(255,255,255,.78);border:1px solid rgba(255,255,255,.09)}
+    .fcard-why-inner strong{color:var(--text);display:block;font-size:.72rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;opacity:.7}
+
+    /* Ajuste panel — expandible inline */
+    .fcard-adjust{overflow:hidden;max-height:0;transition:max-height .28s ease,opacity .22s ease;opacity:0}
+    .fcard-adjust.open{max-height:260px;opacity:1}
+    .fcard-adjust-inner{padding:12px;background:rgba(255,255,255,.04);border-radius:14px;margin-bottom:10px;border:1px solid rgba(255,255,255,.09)}
+    .fcard-adjust-label{font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em;color:var(--muted2);margin-bottom:8px}
+    .fcard-mins-row{display:flex;gap:7px;align-items:center;margin-bottom:10px}
+    .fcard-mins-btn{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);color:var(--text);font-size:1rem;font-weight:900;display:grid;place-items:center;cursor:pointer;flex-shrink:0;transition:.15s}
+    .fcard-mins-btn:active{background:rgba(255,255,255,.16)}
+    .fcard-mins-input{flex:1;min-height:36px;text-align:center;font-size:.95rem;font-weight:900;border-radius:11px;padding:4px 8px}
+    /* Topic chips for adjustment */
+    .fcard-topic-chips{display:flex;gap:6px;flex-wrap:wrap}
+    .fcard-topic-chip{padding:5px 10px;border-radius:999px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);font-size:.74rem;font-weight:700;cursor:pointer;transition:.15s;color:var(--muted)}
+    .fcard-topic-chip.active{background:rgba(255,193,7,.15);border-color:rgba(255,193,7,.45);color:var(--accent)}
+    .fcard-topic-chip:active{opacity:.75}
+
+    /* Bottom actions */
+    .fcard-actions{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center}
+    .fcard-btn-start{min-height:42px;border-radius:14px;font-size:.86rem;font-weight:900;background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 70%,white));color:var(--accent-text);border:none;cursor:pointer;transition:.18s;letter-spacing:-.01em}
+    .fcard-btn-start:active{opacity:.82}
+    .fcard-btn-why{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:var(--muted2);font-size:.8rem;font-weight:900;cursor:pointer;transition:.18s;display:grid;place-items:center}
+    .fcard-btn-why.active{background:rgba(255,193,7,.12);border-color:rgba(255,193,7,.35);color:var(--accent)}
+    .fcard-btn-why:active{opacity:.75}
+    .fcard-btn-adjust{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);color:var(--muted2);font-size:.9rem;cursor:pointer;transition:.18s;display:grid;place-items:center}
+    .fcard-btn-adjust.active{background:rgba(139,92,246,.12);border-color:rgba(139,92,246,.35);color:var(--purple)}
+    .fcard-btn-adjust:active{opacity:.75}
+
+    /* Launch message modal enhancements */
+    .launch-msg{font-size:.9rem;line-height:1.58;color:var(--text);margin-bottom:4px}
+    .launch-msg-loading{display:flex;align-items:center;gap:8px;color:var(--muted2);font-size:.84rem}
+
+    /* Phase badge inside card */
+    .fcard-phase-badge{display:inline-flex;align-items:center;gap:5px;font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em;padding:3px 8px;border-radius:8px;margin-bottom:8px}
+
+    /* Dismissing animation */
+    @keyframes fcardOut{to{opacity:0;transform:translateX(24px) scale(.97)}}
+    .fcard.dismissing{animation:fcardOut .28s ease forwards}
+
+    /* "Todos descartados" empty */
+    .flows-empty{padding:20px;border-radius:22px;text-align:center;background:var(--card-bg);border:1px solid var(--stroke)}
   </style>
 </head>
 <body>
@@ -797,8 +868,11 @@
         <div class="timeline" id="timeline"></div>
       </div>
     </div>
-    <div class="sec-head"><div><h2>Flujos ahora</h2><p>Opciones inteligentes por prioridad real</p></div></div>
-    <div class="h-rail" id="flow-rail"></div>
+    <div class="sec-head" id="flows-head">
+      <div><h2>Flujos ahora</h2><p id="flows-subhead">Opciones inteligentes por prioridad real</p></div>
+      <button class="secondary-btn" id="btn-restore-flows" style="font-size:.74rem;min-height:36px;padding:0 10px;display:none">Restaurar</button>
+    </div>
+    <div id="flow-list"></div>
   </section>
 
   <!-- SEMANA -->
@@ -911,11 +985,11 @@
 
 <!-- NAV -->
 <nav class="bottom-nav hidden" id="bottom-nav">
-  <button class="nav-item active" data-t="inicio"><span class="nav-icon">⌂</span><span>Inicio</span></button>
-  <button class="nav-item" data-t="semana"><span class="nav-icon">◫</span><span>Semana</span></button>
-  <button class="nav-item" data-t="materias"><span class="nav-icon">◈</span><span>Materias</span></button>
-  <button class="nav-item" data-t="agenda"><span class="nav-icon">◇</span><span>Agenda</span></button>
-  <button class="nav-item" data-t="habla"><span class="nav-icon">◌</span><span>Habla</span></button>
+  <button class="nav-item active" data-t="inicio" aria-label="Inicio"><span class="nav-icon">⌂</span><span>Inicio</span></button>
+  <button class="nav-item" data-t="semana" aria-label="Semana"><span class="nav-icon">◫</span><span>Semana</span></button>
+  <button class="nav-item" data-t="materias" aria-label="Materias"><span class="nav-icon">◈</span><span>Materias</span></button>
+  <button class="nav-item" data-t="agenda" aria-label="Agenda"><span class="nav-icon">◇</span><span>Agenda</span></button>
+  <button class="nav-item" data-t="habla" aria-label="Habla con Sophia"><span class="nav-icon">◌</span><span>Habla</span></button>
 </nav>
 
 <!-- MODAL REINICIO CONFIRMADO (§9.2) -->
@@ -923,7 +997,7 @@
   <article class="glass modal-card">
     <div class="card-top">
       <div><p class="kicker">Zona de peligro</p><h2 style="font-size:1.3rem;font-weight:900;letter-spacing:-.05em;margin:2px 0">Borrar todos los datos</h2></div>
-      <button class="icon-btn" onclick="document.getElementById('m-reset-confirm').classList.remove('open')" style="font-size:1.2rem">×</button>
+      <button class="icon-btn" onclick="document.getElementById('m-reset-confirm').classList.remove('open')" style="font-size:1.2rem" aria-label="Cerrar">×</button>
     </div>
     <p class="tiny" style="margin:12px 0">Esta acción eliminará <strong>permanentemente</strong> todas tus materias, notas, sesiones, eventos y el historial de Sophia. No se puede deshacer.</p>
     <p class="tiny" style="margin-bottom:10px;font-weight:700;color:var(--red)">Escribe <strong>BORRAR</strong> para confirmar:</p>
@@ -940,7 +1014,7 @@
   <article class="glass modal-card">
     <div class="card-top">
       <div><p class="kicker">Confirmar eliminación</p><h2 id="m-del-subject-title" style="font-size:1.2rem;font-weight:900;letter-spacing:-.04em;margin:2px 0">Eliminar materia</h2></div>
-      <button class="icon-btn" onclick="document.getElementById('m-del-subject').classList.remove('open')" style="font-size:1.2rem">×</button>
+      <button class="icon-btn" onclick="document.getElementById('m-del-subject').classList.remove('open')" style="font-size:1.2rem" aria-label="Cerrar">×</button>
     </div>
     <p class="tiny" style="margin:12px 0;color:var(--muted)">Se eliminarán <strong>permanentemente</strong> los temas, notas, sesiones y eventos vinculados a esta materia. No se puede deshacer.</p>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:14px">
@@ -955,7 +1029,7 @@
   <article class="glass modal-card">
     <div class="card-top">
       <div><p class="kicker">Copia de seguridad</p><h2 style="font-size:1.3rem;font-weight:900;letter-spacing:-.05em;margin:2px 0">Exportar / Importar</h2></div>
-      <button class="icon-btn" onclick="document.getElementById('m-data-io').classList.remove('open')" style="font-size:1.2rem">×</button>
+      <button class="icon-btn" onclick="document.getElementById('m-data-io').classList.remove('open')" style="font-size:1.2rem" aria-label="Cerrar">×</button>
     </div>
     <p class="tiny" style="margin:12px 0 16px">Guarda todos tus datos en un archivo JSON o restaura desde uno anterior. Ideal antes de limpiar el navegador o cambiar de dispositivo.</p>
     <div style="padding:14px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.22);border-radius:18px;margin-bottom:12px">
@@ -978,7 +1052,7 @@
   <article class="glass modal-card">
     <div class="card-top">
       <div><p class="kicker">Editar evento</p><h2 style="font-size:1.3rem;font-weight:900;letter-spacing:-.05em;margin:2px 0">Modificar evento</h2></div>
-      <button class="icon-btn" onclick="document.getElementById('m-edit-event').classList.remove('open')" style="font-size:1.2rem">×</button>
+      <button class="icon-btn" onclick="document.getElementById('m-edit-event').classList.remove('open')" style="font-size:1.2rem" aria-label="Cerrar">×</button>
     </div>
     <div class="form-grid" style="margin-top:14px">
       <input id="ev-edit-title" placeholder="Título del evento"/>
@@ -1000,7 +1074,7 @@
   <article class="glass modal-card">
     <div class="card-top">
       <div><p class="kicker">Configuración</p><h2 style="font-size:1.5rem;font-weight:900;letter-spacing:-.05em;margin:2px 0">Conectar cerebro</h2></div>
-      <button class="icon-btn" id="m-config-close" style="font-size:1.2rem">×</button>
+      <button class="icon-btn" id="m-config-close" style="font-size:1.2rem" aria-label="Cerrar">×</button>
     </div>
     <p class="tiny" style="margin-top:10px">Tu API Key vive solo en tu navegador, nunca en servidores externos.</p>
     <div class="divider"></div>
@@ -1047,7 +1121,7 @@
             <span id="sd-days-badge" class="pill" style="font-size:.72rem"></span>
           </div>
         </div>
-        <button class="icon-btn" id="sd-close" style="font-size:1.3rem;flex-shrink:0;margin-left:10px">×</button>
+        <button class="icon-btn" id="sd-close" style="font-size:1.3rem;flex-shrink:0;margin-left:10px" aria-label="Cerrar detalle de materia">×</button>
       </div>
     </div>
 
@@ -1163,7 +1237,7 @@
         <p class="kicker">Estructura académica</p>
         <h2 style="font-size:1.3rem;font-weight:900;letter-spacing:-.05em;margin:2px 0">Configurar cortes</h2>
       </div>
-      <button class="icon-btn" onclick="document.getElementById('m-corte-config').classList.remove('open')" style="font-size:1.2rem">×</button>
+      <button class="icon-btn" onclick="document.getElementById('m-corte-config').classList.remove('open')" style="font-size:1.2rem" aria-label="Cerrar">×</button>
     </div>
     <!-- §15.1: description updated to mention Quiz and Entrega -->
     <p class="tiny" style="margin-bottom:14px">Define el peso de cada corte y vincula la evaluaci&#243;n que lo cierra (Parcial, Quiz o Entrega). Los pesos deben sumar 100%.</p>
@@ -1199,6 +1273,42 @@
   </article>
 </div>
 
+<!-- MODAL LANZAMIENTO DE FLUJO -->
+<div class="modal" id="m-launch">
+  <article class="glass modal-card">
+    <div class="card-top" style="margin-bottom:14px">
+      <div style="display:flex;align-items:center;gap:10px;overflow:hidden;min-width:0">
+        <div id="launch-dot" style="width:12px;height:12px;border-radius:50%;flex-shrink:0;background:var(--purple)"></div>
+        <div style="overflow:hidden">
+          <p class="kicker" style="margin:0">Listo para arrancar</p>
+          <h2 id="launch-title" style="font-size:1.15rem;font-weight:900;letter-spacing:-.04em;margin:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">—</h2>
+        </div>
+      </div>
+      <button class="icon-btn" onclick="document.getElementById('m-launch').classList.remove('open')" style="font-size:1.2rem;flex-shrink:0">×</button>
+    </div>
+    <!-- Chip: acción + tiempo -->
+    <div id="launch-action-chip" style="padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);margin-bottom:14px">
+      <span id="launch-mins" style="font-size:.8rem;font-weight:900;color:var(--muted2);margin-right:8px">—</span>
+      <span id="launch-action" style="font-size:.95rem;font-weight:800;color:var(--text)">—</span>
+    </div>
+    <!-- Mensaje de arranque de Sophia -->
+    <div id="launch-msg-wrap" style="min-height:64px;margin-bottom:16px">
+      <div class="launch-msg-loading" id="launch-loading">
+        <div class="spinner"></div><span>Sophia prepara el arranque…</span>
+      </div>
+      <p class="launch-msg hidden" id="launch-msg"></p>
+    </div>
+    <!-- Botones finales -->
+    <div style="display:grid;grid-template-columns:1fr auto;gap:8px">
+      <button class="primary-cta" id="launch-btn-go" style="font-size:.9rem">
+        <span class="spinner" id="launch-btn-spinner" style="display:none"></span>
+        Empezar sesión
+      </button>
+      <button class="secondary-btn" onclick="document.getElementById('m-launch').classList.remove('open')" style="padding:0 14px;font-size:.84rem">Cancelar</button>
+    </div>
+  </article>
+</div>
+
 <!-- MODAL SESIÓN -->
 <div class="modal" id="m-session">
   <article class="glass modal-card">
@@ -1225,7 +1335,7 @@
   <article class="glass modal-card" style="max-height:88vh;overflow-y:auto">
     <div class="card-top">
       <div><p class="kicker">Nueva materia</p><h2 style="font-size:1.4rem;font-weight:900;letter-spacing:-.05em;margin:2px 0">Añadir al semestre</h2></div>
-      <button class="icon-btn" onclick="document.getElementById('m-add-subject').classList.remove('open')" style="font-size:1.2rem">×</button>
+      <button class="icon-btn" onclick="document.getElementById('m-add-subject').classList.remove('open')" style="font-size:1.2rem" aria-label="Cerrar">×</button>
     </div>
     <div class="form-grid" style="margin-top:14px">
       <input type="text" id="as-name" placeholder="Nombre (ej. Estructuras de Datos)"/>
@@ -1258,7 +1368,7 @@
           </div>
           <p class="ip-detail-sub" id="ip-detail-corte"></p>
         </div>
-        <button class="icon-btn" onclick="document.getElementById('m-ip-detail').classList.remove('open')" style="font-size:1.2rem;flex-shrink:0;margin-left:10px">×</button>
+        <button class="icon-btn" onclick="document.getElementById('m-ip-detail').classList.remove('open')" style="font-size:1.2rem;flex-shrink:0;margin-left:10px" aria-label="Cerrar">×</button>
       </div>
     </div>
 
@@ -1472,6 +1582,158 @@ const Logic={
     if(ip>=26)return{c:'var(--orange)',l:'Vulnerable'};
     return{c:'var(--red)',l:'Descuidada'};
   },
+
+  // ── ipContext: context-aware visual representation of IP ─────────────────
+  // Returns: { color, label, badgeText, barColor, barOpacity, hint, isEarly, phase }
+  // phase: 'pre'|'arranque'|'desarrollo'|'cierre'|'sin_datos'
+  // isEarly: true when it's too soon to alarm the user
+  ipContext(sub, tl){
+    const ip=sub.ip;
+    const color=sub.color||'var(--purple)';
+
+    // Pre-semester: neutral, no numbers
+    if(tl?.preSemester){
+      return{
+        color:color, label:'Por comenzar',
+        badgeText:'—', barColor:`${color}55`, barOpacity:0.35,
+        hint:'El semestre aún no inicia. Configura temas y estructura con calma.',
+        isEarly:true, phase:'pre'
+      };
+    }
+
+    // Determine corte phase based on daysElapsed within the corte (~28 days)
+    const daysElapsed = tl?.daysElapsed ?? null;
+    const daysRemaining = tl?.daysRemaining ?? null;
+    const daysTotal = tl?.daysTotal ?? null;
+
+    // Phase thresholds (out of ~28 day corte)
+    // 'arranque': first 7 days of corte — normal to have nothing done
+    // 'desarrollo': days 8-21 — building up, mild alerts ok
+    // 'cierre': days 22+ or <14 days remaining — real pressure
+    // 'sin_datos': no temporal info at all
+    let phase = 'sin_datos';
+    if(daysElapsed !== null){
+      if(daysElapsed <= 7)         phase = 'arranque';
+      else if(daysElapsed <= 21)   phase = 'desarrollo';
+      else                          phase = 'cierre';
+    }
+    // If we know days remaining, that also informs urgency
+    if(daysRemaining !== null && daysRemaining <= 14) phase = 'cierre';
+    if(daysRemaining !== null && daysRemaining <= 0)  phase = 'cierre';
+
+    // Check if subject has any real engagement data
+    const temas = Logic.activeCorte(sub)?.temas || [];
+    const hasTemas = temas.length > 0; // topics loaded counts as engagement, even if all Sin ver
+    const hasSession = (sub.totalH || 0) > 0;
+    const hasNotes = (sub.notes || []).some(n => typeof n.val === 'number');
+    const hasAnyData = hasTemas || hasSession || hasNotes;
+
+    // ── CASE 1: Arranque phase — don't alarm regardless of IP ───────────────
+    if(phase === 'arranque'){
+      if(!hasAnyData){
+        return{
+          color:color, label:'Semana 1',
+          badgeText:'—', barColor:`${color}44`, barOpacity:0.4,
+          hint:'Primeros días del corte — carga los temas cuando los tengas para que Sophia pueda orientarte.',
+          isEarly:true, phase
+        };
+      }
+      // Has topics loaded but all Sin ver, or has some sessions — show neutral state
+      const allSinVer = hasTemas && temas.every(t => (t.estado ?? 0) === 0);
+      if(allSinVer){
+        return{
+          color:color, label:'Temas cargados',
+          badgeText:ip != null ? `${ip}%` : '—',
+          barColor:color, barOpacity:0.55,
+          hint:`Temas cargados, corte recién empezado. Marca los primeros como "Visto en clase" después de cada sesión.`,
+          isEarly:true, phase
+        };
+      }
+      // Some progress already: show IP but with subject's own color (not urgency color)
+      return{
+        color:color, label:'Iniciando',
+        badgeText:ip != null ? `${ip}%` : '—',
+        barColor:color, barOpacity:0.75,
+        hint:'Buen comienzo. Los indicadores de urgencia se activan a medida que el corte avanza.',
+        isEarly:true, phase
+      };
+    }
+
+    // ── CASE 2: Sin datos — can't determine phase ────────────────────────────
+    if(phase === 'sin_datos'){
+      if(!hasAnyData){
+        return{
+          color:color, label:'Sin datos',
+          badgeText:'—', barColor:`${color}33`, barOpacity:0.3,
+          hint:'Configura el inicio del corte o vincula un parcial para que Sophia pueda orientarte.',
+          isEarly:true, phase
+        };
+      }
+      // Has some data but no temporal context
+      if(ip === null){
+        return{
+          color:color, label:'Configurando',
+          badgeText:'—', barColor:`${color}55`, barOpacity:0.5,
+          hint:'Añade una fecha de inicio o vincular el parcial para activar todos los indicadores.',
+          isEarly:true, phase
+        };
+      }
+      // Has IP but no time context — show gently with subject color
+      const ipt = Logic.ipTone(ip);
+      return{
+        color:ipt.c, label:ip >= 46 ? ipt.l : 'Por construir',
+        badgeText:`${ip}%`,
+        barColor: ip >= 46 ? ipt.c : color,
+        barOpacity:0.8,
+        hint:'Configura las fechas del corte para señales más precisas.',
+        isEarly: ip >= 46, phase
+      };
+    }
+
+    // ── CASE 3: Desarrollo — show real data, mild urgency on low IP ──────────
+    if(phase === 'desarrollo'){
+      if(ip === null){
+        return{
+          color:color, label:'En progreso',
+          badgeText:'—', barColor:`${color}66`, barOpacity:0.6,
+          hint:'Carga temas y registra sesiones para que el IP se active.',
+          isEarly:true, phase
+        };
+      }
+      const ipt = Logic.ipTone(ip);
+      // Below 26 in desarrollo: show orange (not red) — there's still time
+      if(ip < 26){
+        return{
+          color:'var(--orange)', label:'Por construir',
+          badgeText:`${ip}%`, barColor:'var(--orange)', barOpacity:1,
+          hint:`IP bajo, pero el corte está en desarrollo. Hay tiempo — empieza por los temas en "Sin ver".`,
+          isEarly:false, phase
+        };
+      }
+      return{
+        color:ipt.c, label:ipt.l,
+        badgeText:`${ip}%`, barColor:ipt.c, barOpacity:1,
+        hint:null, isEarly:false, phase
+      };
+    }
+
+    // ── CASE 4: Cierre — real urgency, full color scheme ────────────────────
+    if(ip === null){
+      return{
+        color:'var(--orange)', label:'Sin datos',
+        badgeText:'——', barColor:`${color}55`, barOpacity:0.6,
+        hint:`El parcial se acerca. Carga temas para que Sophia pueda orientarte con precisión.`,
+        isEarly:false, phase
+      };
+    }
+    const ipt = Logic.ipTone(ip);
+    return{
+      color:ipt.c, label:ipt.l,
+      badgeText:`${ip}%`, barColor:ipt.c, barOpacity:1,
+      hint:null, isEarly:false, phase
+    };
+  },
+
   calcIP(sub){
     const corte=Logic.activeCorte(sub);
     const tl=Logic.corteTimeLayer(sub,corte);
@@ -1538,10 +1800,18 @@ const Logic={
   },
   isSV(sid){
     // §3.4: SV for Parcial ≤72h OR for Quiz/Entrega/Exposición/Habilitación ≤48h
-    return S.events.some(e=>e.sid===sid&&Logic.hUntil(e.date)>=0&&(
+    const byTime=S.events.some(e=>e.sid===sid&&Logic.hUntil(e.date)>=0&&(
       (e.type==='Parcial'&&Logic.hUntil(e.date)<=72)||
       (['Quiz','Entrega','Exposición','Habilitación'].includes(e.type)&&Logic.hUntil(e.date)<=48)
     ));
+    if(byTime) return true;
+    // §1.6: also activate SV if IP<25% AND a Parcial is within 7 days (168h)
+    // This catches the case where the student is very underprepared but the event is not yet ≤72h
+    const sub=S.subjects.find(x=>x.id===sid);
+    if(sub&&sub.ip!=null&&sub.ip<25){
+      return S.events.some(e=>e.sid===sid&&e.type==='Parcial'&&Logic.hUntil(e.date)>=0&&Logic.hUntil(e.date)<=168);
+    }
+    return false;
   },
   hUntil(d){ return(new Date(d)-Date.now())/3600000; },
   derive(){
@@ -1565,8 +1835,12 @@ const Logic={
     return sorted.slice(0,4).map(s=>{
       const e=S.energy;
       const corteActivo=Logic.activeCorte(s);
-      const tl=corteActivo?Logic.corteTimeLayer(s,corteActivo):{layer:0,daysElapsed:null,daysRemaining:null,daysTotal:null,note:''};
+      const tl=corteActivo?Logic.corteTimeLayer(s,corteActivo):{layer:0,daysElapsed:null,daysRemaining:null,daysTotal:null,note:'',preSemester:false};
       const temas=corteActivo?.temas||[];
+
+      // ── Usa ipContext igual que las tarjetas de materias ─────────────────
+      // Esto garantiza que flujos y tarjetas siempre muestren la misma fase
+      const ctx=Logic.ipContext(s, tl);
 
       // Tema más urgente: prioriza estado más bajo primero
       const temaTarget=temas.find(t=>t.estado===0)
@@ -1575,32 +1849,37 @@ const Logic={
                     ||temas.find(t=>t.estado===3)
                     ||null;
 
-      const days=Math.floor((Date.now()-new Date(s.lastStudyDate||Date.now()))/86400000);
+      // §19.1: null lastStudyDate means never studied — don't treat as "0 days ago"
+      const days=s.lastStudyDate
+        ?Math.floor((Date.now()-new Date(s.lastStudyDate).getTime())/86400000)
+        :null;
       const mins=e==='Alta'?45:e==='Media'?30:15;
 
       // §14.3: detect if subject has a class later today
       const now=new Date();
       const todayAppDay=Logic.jsToApp(now.getDay());
-      const classeToday=(s.schedule||[]).filter(sc=>{
+      const classesToday=(s.schedule||[]).filter(sc=>{
         if(sc.day!==todayAppDay) return false;
         const [eh,em]=sc.end.split(':').map(Number);
         const endTime=new Date(now); endTime.setHours(eh,em,0,0);
         return endTime>now; // class hasn't ended yet
       });
-      const nextClass=classeToday.sort((a,b)=>a.start.localeCompare(b.start))[0];
+      const nextClass=classesToday.sort((a,b)=>a.start.localeCompare(b.start))[0];
 
-      // §14.4: verb matrix crossed with energy level
+      // §14.4: verb matrix crossed with energy level AND corte phase
+      // In early phases: gentler verbs. In cierre: more urgent.
       const verbMatrix={
         Alta:   ['explorar','entender en profundidad','practicar','consolidar','dominar'],
         Media:  ['ver','entender','practicar','consolidar','repasar'],
         Baja:   ['repasar notas de','revisar','repasar','repasar rápido','repasar rápido']
       };
-      const verbs=verbMatrix[e]||verbMatrix['Media'];
+      // En fase 'arranque': siempre verbos suaves independiente de la energía
+      const effectiveEnergy=ctx.phase==='arranque'?'Baja':e;
+      const verbs=verbMatrix[effectiveEnergy]||verbMatrix['Media'];
 
       let accion;
       if(temaTarget){
         const verb=verbs[temaTarget.estado||0];
-        // §14.3: prefix with pre-class context if applicable
         if(nextClass){
           accion=`Antes de clase (${nextClass.start}): ${verb} ${temaTarget.nombre}`;
         } else {
@@ -1613,24 +1892,44 @@ const Logic={
       }
 
       // Línea 3: contexto inmediato
-      const ctx3=(days===0?'Sesión hoy ya · ':`${days}d sin sesión · `)
-               +(corteActivo?`Corte ${corteActivo.numero} activo`:'sin corte activo');
+      const ctx3=(days===null?'Sin sesiones aún · ':days===0?'Sesión hoy ya · ':`${days}d sin sesión · `)
+               +(corteActivo?`Corte ${corteActivo.numero}`:' sin corte activo');
 
-      // Línea 4: urgencia real
-      const ipt=s.ip!=null?Logic.ipTone(s.ip):null;
-      const ipStr=s.ip!=null?`IP ${s.ip}% · ${ipt.l}`:`IDA ${s.ida}`;
+      // Línea 4: urgencia — usa label de ipContext para coherencia con tarjetas
+      // Solo muestra IP en fases donde tiene sentido (no en arranque sin datos)
+      const showIP= s.ip!=null && !ctx.isEarly;
+      const ipStr=showIP?`IP ${s.ip}% · ${ctx.label}`:ctx.isEarly?ctx.label:'Sin IP aún — añade temas';
       const parcialStr=tl.preSemester
         ?` · Sem. en ${tl.daysUntilSemester}d`
-        :tl.daysRemaining!=null&&tl.layer>=2?(tl.daysRemaining===0?` · Parcial hoy`:`· Parcial en ~${tl.daysRemaining}d`)
-        :'';
+        :tl.daysRemaining!=null&&tl.layer>=2&&tl.daysRemaining>0
+          ?` · Parcial en ~${tl.daysRemaining}d`
+          :tl.daysRemaining===0?' · Parcial hoy ⚠'
+          :'';
       const ctx4=ipStr+parcialStr;
+
+      // ── Por qué se sugiere esto — razonamiento para mostrar al usuario ───
+      const whyParts=[];
+      if(temaTarget){
+        const stLabel=topicState(temaTarget.estado).label;
+        whyParts.push(`"${temaTarget.nombre}" está en ${stLabel} — es el tema más urgente del ${corteActivo?'Corte '+corteActivo.numero:'corte activo'}.`);
+      }
+      if(days!==null&&days>2) whyParts.push(`Llevas ${days} días sin registrar una sesión en esta materia.`);
+      if(days===null) whyParts.push('No hay sesiones registradas todavía — buen momento para empezar.');
+      if(tl.daysRemaining!=null&&tl.daysRemaining<=14&&tl.daysRemaining>0) whyParts.push(`El parcial es en ${tl.daysRemaining} días — el tiempo empieza a contar.`);
+      if(s.sv) whyParts.push('⚠ Modo supervivencia activo: el parcial está muy cerca.');
+      if(ctx.isEarly&&!s.sv) whyParts.push('El corte está comenzando — es el momento ideal para construir base.');
+      const why=whyParts.join(' ');
 
       return{
         id:crypto.randomUUID(),
         title:s.name,
-        accion, mins, ctx3, ctx4,
-        sid:s.id, ip:s.ip, ida:s.ida,
-        color:s.color, ipColor:ipt?.c||'var(--muted2)',
+        accion, mins, ctx3, ctx4, why,
+        temas, temaTarget,
+        corteActivo,
+        sid:s.id, ip:s.ip,
+        color:s.color, ipColor:ctx.color,
+        ctxPhase:ctx.phase, ctxLabel:ctx.label,
+        isEarly:ctx.isEarly,
         energy:e, sv:s.sv
       };
     });
@@ -2276,16 +2575,42 @@ try{ text=await API.ask(`Contexto de ${S.user.name||'el estudiante'} ahora: ${JS
     if(text){ el.textContent=text; Logic.addPulse(text,'Flujo'); }
     else{
       const s=(Logic._sorted||S.subjects)[0];
-      el.textContent=`Con energía ${S.energy.toLowerCase()}, lo más inteligente ahora es dedicar ${S.energy==='Alta'?45:25} minutos a ${s.name} (IDA ${s.ida} — ${Logic.tone(s.ida).l}).`;
+      const ipt=s.ip!=null?Logic.ipTone(s.ip):null;
+      const corte=Logic.activeCorte(s);
+      const temas=corte?.temas||[];
+      const sinVer=temas.filter(t=>t.estado===0);
+      if(sinVer.length){
+        el.textContent=`Con energía ${S.energy.toLowerCase()}, lo más urgente ahora es ${s.name} — ${sinVer[0].nombre} sigue en Sin ver.`;
+      } else if(ipt){
+        el.textContent=`Con energía ${S.energy.toLowerCase()}, lo más inteligente ahora es dedicar ${S.energy==='Alta'?45:25} minutos a ${s.name} (IP ${s.ip}% — ${ipt.l}).`;
+      } else {
+        el.textContent=`Con energía ${S.energy.toLowerCase()}, empieza con ${s.name}. Añade estructura de cortes para señales más precisas.`;
+      }
     }
   },
 
   async analyze(){
     Logic.derive();
     if(!S.subjects.length){ toast('Añade materias para que Sophia pueda analizarlas.'); return; }
-    const sum=S.subjects.map(s=>`${s.name}: IDA ${s.ida} (${Logic.tone(s.ida).l}), ${Math.floor((Date.now()-new Date(s.lastStudyDate||Date.now()))/86400000)} días sin estudiar, ${s.credits} créd${s.sv?' [PARCIAL INMINENTE]':''}`).join('; ');
+    // §25.1: build prompt using IP only — never mention IDA to Sophia
+    const sum=S.subjects.map(s=>{
+      const ipt=s.ip!=null?Logic.ipTone(s.ip):null;
+      const corte=Logic.activeCorte(s);
+      const tl=corte?Logic.corteTimeLayer(s,corte):null;
+      const sinVer=(corte?.temas||[]).filter(t=>t.estado===0).map(t=>t.nombre);
+      const days=s.lastStudyDate
+        ?Math.floor((Date.now()-new Date(s.lastStudyDate).getTime())/86400000)
+        :null;
+      const daysStr=days===null?'sin sesiones registradas':`${days}d sin sesión`;
+      const parcialStr=tl?.daysRemaining!=null?`, parcial en ~${tl.daysRemaining}d`:'';
+      const sinVerStr=sinVer.length?`, sin ver: ${sinVer.slice(0,2).join(', ')}${sinVer.length>2?' y más':''}` :'';
+      return `${s.name}: IP ${s.ip!=null?s.ip+'% ('+ipt.l+')':'sin datos'}, ${daysStr}, ${s.credits}cr${parcialStr}${sinVerStr}${s.sv?' [SUPERVIVENCIA]':''}`;
+    }).join('; ');
     let text='';
-    try{ text=await API.ask(`Estado académico de ${S.user.name||'el estudiante'}: ${sum}. Recuerda: IDA mayor = más urgente. Genera análisis en 90 palabras: tono sereno y estratégico, sin ordenar, con datos concretos.`,200); }
+    try{ text=await API.ask(
+      `Estado académico de ${S.user.name||'el estudiante'}: ${sum}. IP más bajo = más urgente. Genera análisis en 90 palabras: tono sereno y estratégico, menciona temas específicos si hay sin ver, sin ordenar.`,
+      200, 0.55
+    ); }
     catch(e){ console.warn(e); }
     if(text) Logic.addPulse(text,'Análisis');
   },
@@ -2314,7 +2639,11 @@ try{ text=await API.ask(`Contexto de ${S.user.name||'el estudiante'} ahora: ${JS
     const totalW=hasWeights?vn.reduce((a,n)=>a+(n.weight||0),0):0;
     const weighted=hasWeights&&totalW>0?(vn.reduce((a,n)=>a+n.val*(n.weight||0),0)/totalW).toFixed(2):null;
     const avg=vn.length?(vn.reduce((a,b)=>a+b.val,0)/vn.length).toFixed(2):null;
-    const days=Math.floor((Date.now()-new Date(s.lastStudyDate||Date.now()))/86400000);
+    // §19.1: null lastStudyDate means never studied — same null-safe pattern as voiceSub/ctx()
+    const days=s.lastStudyDate
+      ?Math.floor((Date.now()-new Date(s.lastStudyDate).getTime())/86400000)
+      :null;
+    const daysStr=days===null?'sin sesiones registradas aún':`${days} día${days!==1?'s':''} sin estudiar`;
     const events=S.events.filter(e=>e.sid===sid&&Logic.hUntil(e.date)>0).sort((a,b)=>new Date(a.date)-new Date(b.date));
     const nextEv=events[0];
     const corte=Logic.activeCorte(s);
@@ -2334,7 +2663,7 @@ try{ text=await API.ask(`Contexto de ${S.user.name||'el estudiante'} ahora: ${JS
     // §25.1: do NOT include IDA in prompt
     // §25.4: analyzeSubject uses lower temperature (0.25) for factual precision
     const prompt=`Análisis específico de ${s.name} para ${S.user.name||'el estudiante'}.
-IP: ${s.ip!=null?s.ip+'% ('+ipt.l+')':'Sin datos'}. Días sin estudiar: ${days}. Créditos: ${s.credits}.
+IP: ${s.ip!=null?s.ip+'% ('+ipt.l+')':'Sin datos'}. ${daysStr}. Créditos: ${s.credits}.
 ${notaStr}
 ${nextEv?`Próximo evento: ${nextEv.title} en ${Math.ceil(Logic.hUntil(nextEv.date)/24)} días.`:'Sin eventos próximos.'}
 Sesiones registradas: ${S.flows.filter(f=>f.sid===sid).length}.${temasStr}${parcialStr}
@@ -2445,13 +2774,18 @@ const UI={
       return now>=s2&&now<=e2;
     })):null;
     const top=(Logic._sorted||S.subjects)[0], anySV=S.subjects.some(s=>s.sv);
-    const topIpt=top.ip!=null?Logic.ipTone(top.ip):null;
-    if(activeClass)        $('#hero-title').textContent=`En clase: ${activeClass.name}`;
-    else if(anySV)         $('#hero-title').textContent='⚠ Modo Supervivencia activo.';
-    else if(top.ip!=null&&top.ip<30) $('#hero-title').textContent=`${top.name} está descuidada — IP ${top.ip}%.`;
-    else if(top.ip!=null&&top.ip<46) $('#hero-title').textContent=`${top.name} está vulnerable — necesita atención.`;
-    else if(top.ida>40)    $('#hero-title').textContent=top.name+' exige atención.';
-    else                   $('#hero-title').textContent='El día táctico está listo.';
+    // Build context for the most-urgent subject
+    const topCorte=Logic.activeCorte(top);
+    const topTl=Logic.corteTimeLayer(top,topCorte);
+    const topCtx=Logic.ipContext(top,topTl);
+
+    if(activeClass)                $('#hero-title').textContent=`En clase: ${activeClass.name}`;
+    else if(anySV)                 $('#hero-title').textContent='⚠ Modo Supervivencia activo.';
+    else if(topCtx.isEarly)        $('#hero-title').textContent=topCtx.phase==='arranque'?'Corte arrancando — carga tus temas.':'Todo listo para arrancar.';
+    else if(top.ip!=null&&top.ip<30) $('#hero-title').textContent=`${top.name} está ${topCtx.label.toLowerCase()} — IP ${top.ip}%.`;
+    else if(top.ip!=null&&top.ip<46) $('#hero-title').textContent=`${top.name} necesita atención — IP ${top.ip}%.`;
+    else if(top.ip==null)          $('#hero-title').textContent='Configura los cortes para señales precisas.';
+    else                           $('#hero-title').textContent='El día táctico está listo.';
   },
 
   svBanner(){
@@ -2565,42 +2899,267 @@ const UI={
   },
 
   renderFlows(){
-    const rail=$('#flow-rail');
-    if(!S.subjects.length){ rail.innerHTML='<div class="glass" style="padding:20px;flex:1;text-align:center;color:var(--muted2);font-size:.84rem">Añade materias para ver flujos tácticos.</div>'; return; }
-    // §14.1: filter out sids dismissed this session
-    if(!UI._dismissedFlowSids) UI._dismissedFlowSids=new Set();
-    const flows=Logic.flows().filter(f=>!UI._dismissedFlowSids.has(f.sid));
-    if(!flows.length){
-      rail.innerHTML='<div class="glass" style="padding:20px;flex:1;text-align:center;color:var(--muted2);font-size:.84rem">Todos los flujos descartados. <button class="secondary-btn" style="display:inline-block;margin-top:10px;font-size:.8rem" onclick="App.UI._dismissedFlowSids=new Set();App.UI.renderFlows()">Restaurar</button></div>';
+    const list=$('#flow-list');
+    const restoreBtn=$('#btn-restore-flows');
+    const subhead=$('#flows-subhead');
+    if(!S.subjects.length){
+      list.innerHTML='<div class="flows-empty"><p style="color:var(--muted2);font-size:.84rem;margin:0">Añade materias para ver flujos tácticos.</p></div>';
+      if(restoreBtn) restoreBtn.style.display='none';
       return;
     }
-    rail.innerHTML=flows.map(f=>`
-      <article class="flow-card rich-flow${f.sv?' danger':''}" style="border-color:${f.color}33">
-        <div class="card-top" style="margin-bottom:8px">
-          <div style="display:flex;align-items:center;gap:6px;overflow:hidden;min-width:0">
-            <div style="width:9px;height:9px;border-radius:50%;flex-shrink:0;background:${f.color}"></div>
-            <span class="card-title" style="margin:0;font-size:.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(f.title)}</span>
+    if(!(UI._dismissedFlowSids instanceof Set)) UI._dismissedFlowSids=new Set();
+    const flows=Logic.flows().filter(f=>!UI._dismissedFlowSids.has(f.sid));
+
+    if(!flows.length){
+      list.innerHTML='<div class="flows-empty"><p style="color:var(--muted2);font-size:.84rem;margin:0">Todos los flujos descartados por ahora.</p></div>';
+      if(restoreBtn) restoreBtn.style.display='';
+      return;
+    }
+    if(restoreBtn) restoreBtn.style.display='none';
+
+    // Subhead context
+    const todayFlows=S.flows.filter(f=>{
+      const d=new Date(f.ts||0);
+      return d.toDateString()===new Date().toDateString()&&f.result!=='No pude';
+    });
+    if(subhead){
+      if(todayFlows.length>0){
+        const totalMin=todayFlows.reduce((a,f)=>a+(f.mins||0),0);
+        subhead.textContent=`${todayFlows.length} sesión${todayFlows.length>1?'es':''} hoy · ${totalMin}min registrados`;
+      } else {
+        subhead.textContent='Opciones inteligentes por prioridad real';
+      }
+    }
+
+    list.innerHTML=flows.map((f,i)=>{
+      const accentColor=f.color;
+      // Phase badge — only show for early phases to explain why the IP is calm
+      const phaseBadge=f.isEarly&&!f.sv?`<div class="fcard-phase-badge" style="background:${f.color}18;border:1px solid ${f.color}33;color:${f.color}cc">${
+        f.ctxPhase==='arranque'?'🌱 Arranque de corte':
+        f.ctxPhase==='pre'?'⏳ Pre-semestre':
+        f.ctxPhase==='sin_datos'?'⚙ Sin datos temporales':''
+      }</div>`:'';
+
+      // Topics chips for adjustment (up to 4 topics)
+      const topicChips=(f.temas||[]).slice(0,5).map(t=>{
+        const st=topicState(t.estado);
+        const isSelected=f.temaTarget&&t.id===f.temaTarget.id;
+        return`<button class="fcard-topic-chip${isSelected?' active':''}"
+          onclick="App.UI._selectFlowTopic('${f.sid}','${t.id}',this)"
+          data-tid="${t.id}" data-tname="${esc(t.nombre)}" data-tstate="${t.estado}"
+          title="${st.label}">
+          ${st.symbol} ${esc(t.nombre.length>18?t.nombre.slice(0,16)+'…':t.nombre)}
+        </button>`;
+      }).join('');
+
+      const hasTopics=(f.temas||[]).length>0;
+
+      return`<article class="fcard${f.sv?' sv-card':''}" style="border-left-color:${accentColor}" id="fcard-${f.sid}">
+        <div class="fcard-top">
+          <div class="fcard-dot" style="background:${accentColor}"></div>
+          <span class="fcard-name">${esc(f.title)}</span>
+          <span class="fcard-epill">${f.energy}</span>
+        </div>
+        ${phaseBadge}
+        <div class="fcard-action">
+          <span class="fcard-time">${f.mins}min</span><span style="color:${accentColor}cc">·</span>
+          <span style="color:var(--accent2)"> ${esc(f.accion)}</span>
+        </div>
+        <p class="fcard-ctx">${esc(f.ctx3)}</p>
+        <p class="fcard-urgency" style="color:${f.ipColor}">${esc(f.ctx4)}</p>
+
+        <!-- Panel por qué -->
+        <div class="fcard-why" id="fwhy-${f.sid}">
+          <div class="fcard-why-inner">
+            <strong>¿Por qué ahora?</strong>
+            ${esc(f.why||'Sin contexto adicional disponible.')}
           </div>
-          <span class="pill" style="font-size:.65rem;padding:4px 8px;flex-shrink:0">${f.energy}</span>
         </div>
-        <div style="font-size:1.1rem;font-weight:900;letter-spacing:-.03em;color:var(--text);margin-bottom:4px;line-height:1.25">
-          ${f.mins}min · <span style="color:var(--accent2)">${esc(f.accion)}</span>
+
+        <!-- Panel ajuste -->
+        <div class="fcard-adjust" id="fadj-${f.sid}">
+          <div class="fcard-adjust-inner">
+            <p class="fcard-adjust-label">Ajustar tiempo</p>
+            <div class="fcard-mins-row">
+              <button class="fcard-mins-btn" onclick="App.UI._adjustFlowMins('${f.sid}',-10)">−</button>
+              <input class="fcard-mins-input" type="number" id="fadj-mins-${f.sid}"
+                value="${f.mins}" min="5" max="180" inputmode="numeric"/>
+              <button class="fcard-mins-btn" onclick="App.UI._adjustFlowMins('${f.sid}',+10)">+</button>
+            </div>
+            ${hasTopics?`<p class="fcard-adjust-label" style="margin-top:4px">Cambiar tema</p>
+            <div class="fcard-topic-chips" id="fadj-chips-${f.sid}">${topicChips}</div>`:''}
+          </div>
         </div>
-        <p class="card-copy" style="margin:0 0 3px;font-size:.76rem">${esc(f.ctx3)}</p>
-        <p class="card-copy" style="margin:0;font-size:.76rem;color:${f.ipColor};font-weight:700">${esc(f.ctx4)}</p>
-        <div class="flow-actions" style="margin-top:12px">
-          <button class="flow-btn choose" onclick="App.Logic.openSession('${f.sid}',${f.mins})">Elegir este</button>
-          <button class="flow-btn" onclick="App.UI._dismissFlow('${f.sid}',this)">Descartar</button>
+
+        <div class="fcard-actions">
+          <button class="fcard-btn-start" onclick="App.UI._launchFlow('${f.sid}')">Empezar →</button>
+          <button class="fcard-btn-why" id="fbtn-why-${f.sid}" onclick="App.UI._toggleFlowWhy('${f.sid}',this)" title="¿Por qué este flujo?">?</button>
+          <button class="fcard-btn-adjust" id="fbtn-adj-${f.sid}" onclick="App.UI._toggleFlowAdjust('${f.sid}',this)" title="Ajustar">⚙</button>
         </div>
-      </article>`).join('');
+        <button onclick="App.UI._dismissFlow('${f.sid}',this)"
+          style="width:100%;margin-top:8px;padding:6px;font-size:.72rem;font-weight:700;color:var(--muted2);background:none;border:none;cursor:pointer;opacity:.7">
+          Descartar esta opción
+        </button>
+      </article>`;
+    }).join('');
   },
 
-  // §14.1: register dismissed flow and remove card with animation
+  // §14.1 — dismiss flow with animation
   _dismissFlow(sid, btn){
-    if(!UI._dismissedFlowSids) UI._dismissedFlowSids=new Set();
+    if(!(UI._dismissedFlowSids instanceof Set)) UI._dismissedFlowSids=new Set();
     UI._dismissedFlowSids.add(sid);
-    const card=btn.closest('.flow-card');
-    if(card){ card.classList.add('dismissing'); setTimeout(()=>UI.renderFlows(),320); }
+    const card=document.getElementById('fcard-'+sid)||btn?.closest('.fcard');
+    if(card){ card.classList.add('dismissing'); setTimeout(()=>UI.renderFlows(),300); }
+    else UI.renderFlows();
+  },
+
+  // Toggle "¿Por qué?" panel
+  _toggleFlowWhy(sid, btn){
+    const panel=document.getElementById('fwhy-'+sid);
+    if(!panel) return;
+    const isOpen=panel.classList.toggle('open');
+    if(btn) btn.classList.toggle('active',isOpen);
+    // Close adjust if open
+    const adj=document.getElementById('fadj-'+sid);
+    const adjBtn=document.getElementById('fbtn-adj-'+sid);
+    if(adj&&isOpen){ adj.classList.remove('open'); if(adjBtn) adjBtn.classList.remove('active'); }
+  },
+
+  // Toggle adjust panel
+  _toggleFlowAdjust(sid, btn){
+    const panel=document.getElementById('fadj-'+sid);
+    if(!panel) return;
+    const isOpen=panel.classList.toggle('open');
+    if(btn) btn.classList.toggle('active',isOpen);
+    // Close why if open
+    const why=document.getElementById('fwhy-'+sid);
+    const whyBtn=document.getElementById('fbtn-why-'+sid);
+    if(why&&isOpen){ why.classList.remove('open'); if(whyBtn) whyBtn.classList.remove('active'); }
+    if(isOpen){
+      const input=document.getElementById('fadj-mins-'+sid);
+      if(input) setTimeout(()=>input.focus(),200);
+    }
+  },
+
+  // Adjust minutes +/-
+  _adjustFlowMins(sid, delta){
+    const input=document.getElementById('fadj-mins-'+sid);
+    if(!input) return;
+    const current=parseInt(input.value)||30;
+    input.value=Math.max(5,Math.min(180,current+delta));
+  },
+
+  // Select a topic chip in adjustment panel
+  _selectFlowTopic(sid, tid, btn){
+    const chips=document.querySelectorAll(`#fadj-chips-${sid} .fcard-topic-chip`);
+    chips.forEach(c=>c.classList.remove('active'));
+    if(btn) btn.classList.add('active');
+  },
+
+  // Launch flow — open launch modal with Sophia's launch message
+  _launchFlow(sid){
+    // Get flow data
+    const flows=Logic.flows();
+    const f=flows.find(x=>x.sid===sid);
+    if(!f) return;
+
+    // Read adjusted mins/topic from adjust panel if open
+    const minsInput=document.getElementById('fadj-mins-'+sid);
+    const adjustedMins=minsInput?parseInt(minsInput.value)||f.mins:f.mins;
+
+    // Read selected topic chip
+    const activeChip=document.querySelector(`#fadj-chips-${sid} .fcard-topic-chip.active`);
+    const selectedTopicName=activeChip?activeChip.dataset.tname:f.temaTarget?.nombre||null;
+
+    // Store for session opening
+    UI._launchSid=sid;
+    UI._launchMins=adjustedMins;
+
+    // Populate modal
+    const dot=document.getElementById('launch-dot');
+    const title=document.getElementById('launch-title');
+    const minsEl=document.getElementById('launch-mins');
+    const actionEl=document.getElementById('launch-action');
+    if(dot) dot.style.background=f.color;
+    if(title) title.textContent=f.title;
+    if(minsEl) minsEl.textContent=adjustedMins+'min';
+    if(actionEl) actionEl.textContent=selectedTopicName
+      ?`${topicState(f.temaTarget?.estado||0).symbol} ${f.accion.replace(f.temaTarget?.nombre||'',selectedTopicName)}`
+      :f.accion;
+
+    // Show modal, start loading message
+    const modal=document.getElementById('m-launch');
+    const loadingEl=document.getElementById('launch-loading');
+    const msgEl=document.getElementById('launch-msg');
+    if(loadingEl) loadingEl.style.display='flex';
+    if(msgEl) msgEl.classList.add('hidden');
+    modal.classList.add('open');
+
+    // Generate Sophia's launch message
+    UI._generateLaunchMsg(f, adjustedMins, selectedTopicName);
+  },
+
+  // Generate contextual launch message — Groq if available, else local
+  async _generateLaunchMsg(f, mins, topicOverride){
+    const loadingEl=document.getElementById('launch-loading');
+    const msgEl=document.getElementById('launch-msg');
+    const topic=topicOverride||f.temaTarget?.nombre||null;
+    const temaState=f.temaTarget?topicState(f.temaTarget.estado).label:null;
+
+    let msg='';
+
+    if(CFG.groqKey){
+      try{
+        const prompt=`Eres Sophia, asistente académica de ${S.user.name||'el estudiante'} en la UIS.
+El estudiante está a punto de comenzar una sesión de estudio. Dale un mensaje de arranque CONCRETO y MOTIVADOR en 2-3 frases máximo.
+Contexto:
+- Materia: ${f.title}
+- Acción: ${mins} minutos de "${topic||f.accion}"
+${temaState?`- El tema está en estado: ${temaState}`:''}
+- ${f.ctx3}
+- ${f.ctx4}
+${f.sv?'- ⚠ Modo supervivencia: parcial muy pronto.':''}
+
+Sé específico con el tema si lo hay. Da una recomendación práctica de cómo empezar (ej. qué hacer los primeros 5 minutos). Habla directo en segunda persona. Sin saludos ni relleno.`;
+
+        const res=await fetch('https://api.groq.com/openai/v1/chat/completions',{
+          method:'POST',
+          headers:{'Content-Type':'application/json','Authorization':'Bearer '+CFG.groqKey},
+          body:JSON.stringify({
+            model:CFG.model||'llama-3.3-70b-versatile',
+            max_tokens:120,
+            messages:[{role:'system',content:prompt},{role:'user',content:'Dame el mensaje de arranque.'}]
+          })
+        });
+        if(res.ok){
+          const d=await res.json();
+          msg=d.choices?.[0]?.message?.content?.trim()||'';
+        }
+      }catch(err){ msg=''; }
+    }
+
+    // Fallback local si no hay Groq o falló
+    if(!msg){
+      const stateAdvice={
+        'Sin ver':'Empieza leyendo o viendo el tema por primera vez — sin presión, solo exponte.',
+        'Visto en clase':'Ya lo viste en clase. Ahora intenta explicártelo a ti mismo con tus propias palabras.',
+        'Entendido':'Entiendes la teoría. Es hora de ejercicios — busca un par de problemas y trabájalos.',
+        'Practicado':'Ya tienes base. Busca variantes del tema o condiciones que no hayas visto aún.',
+        'Sólido':'Nivel casi listo. Trabaja bajo condiciones de parcial: sin notas, contra el reloj.'
+      };
+      const advice=temaState?stateAdvice[temaState]||'':'';
+      if(topic&&advice){
+        msg=`${mins} minutos para ${topic}. ${advice}`;
+      } else if(f.sv){
+        msg=`Parcial muy próximo. Prioriza repasar errores frecuentes y hacer simulacros cortos — no teoría nueva ahora.`;
+      } else {
+        msg=`${mins} minutos de ${f.title}. Empieza simple: abre el material, encuentra el punto exacto donde te quedaste, y arranca desde ahí.`;
+      }
+    }
+
+    // Show message
+    if(loadingEl) loadingEl.style.display='none';
+    if(msgEl){ msgEl.textContent=msg; msgEl.classList.remove('hidden'); }
   },
 
   weekStrip(){
@@ -2653,14 +3212,18 @@ const UI={
     $('#sub-grid').innerHTML=displayOrder.map(s=>{
       const corte=Logic.activeCorte(s);
       const tl=Logic.corteTimeLayer(s,corte);
-      const ipt=s.ip!=null?Logic.ipTone(s.ip):Logic.ipTone(null);
-      const ipVal=s.ip!=null?s.ip+'%':'——';
+      const ctx=Logic.ipContext(s, tl);
+      const noTopics=!(corte?.temas?.length);
+
+      // Corte label uses context-aware label, not raw ipTone
       const corteLabel=tl.preSemester
         ?`Corte ${corte?.numero||1} · Sem. en ${tl.daysUntilSemester}d`
-        :corte?`Corte ${corte.numero} · ${ipt.l}`:`${ipt.l}`;
-      // Barra: IP si existe, sino horas acumuladas
+        :corte?`Corte ${corte.numero} · ${ctx.label}`:`${ctx.label}`;
+
+      // Bar: IP if exists, else accumulated hours — color from context
       const barPct=s.ip!=null?s.ip:Math.min(100,((s.totalH||0)/(s.credits*10))*100).toFixed(0);
-      const barColor=s.ip!=null?ipt.c:s.color;
+      const barColor=ctx.barColor;
+
       const vn=(s.notes||[]).filter(n=>typeof n.val==='number'&&!isNaN(n.val));
       const hasWeights=vn.some(n=>n.weight>0);
       let avg='—';
@@ -2674,23 +3237,31 @@ const UI={
       }
       const events=S.events.filter(e=>e.sid===s.id&&Logic.hUntil(e.date)>0).sort((a,b)=>new Date(a.date)-new Date(b.date));
       const nextEv=events[0];
+
+      // Badge background and border use context color with appropriate opacity
+      const badgeBg=`${ctx.color}18`, badgeBorder=`${ctx.color}44`;
+
       return`<article class="sub-card${s.sv?' danger':''}" onclick="App.UI.openSubjectDetail('${s.id}')">
         <div style="height:4px;border-radius:999px;background:${s.color};margin-bottom:12px"></div>
         <div class="card-top">
-          <span class="pill" style="font-size:.68rem;padding:5px 8px;color:${ipt.c};border-color:${ipt.c}44;background:${ipt.c}18">${ipt.l}</span>
-          <span class="ida-badge" style="background:${ipt.c}">${ipVal}</span>
+          <span class="pill" style="font-size:.68rem;padding:5px 8px;color:${ctx.color};border-color:${badgeBorder};background:${badgeBg}">${ctx.label}</span>
+          <span class="ida-badge" style="background:${ctx.color};opacity:${ctx.isEarly?0.65:1}">${ctx.badgeText}</span>
         </div>
         <div class="card-title" style="margin-top:10px;font-size:.95rem">${esc(s.name)}</div>
         <p class="card-copy">${corteLabel} · ${avg!=='—'?'Prom '+avg+' · ':''}${s.credits}cr</p>
         ${nextEv?`<p class="card-copy" style="color:var(--accent2);font-weight:700;margin-top:3px">📅 ${nextEv.title.length>22?nextEv.title.slice(0,20)+'…':nextEv.title} en ${Math.ceil(Logic.hUntil(nextEv.date)/24)}d</p>`:''}
-        <div class="progress ip-bar" 
+        <div class="progress ip-bar"
           onclick="event.stopPropagation();App.UI.openIPDetail('${s.id}')"
           role="button"
-          aria-label="Ver detalle del IP de ${esc(s.name)}: ${ipVal}"
-          title="IP ${ipVal} — toca para ver el desglose completo">
+          aria-label="Ver detalle del IP de ${esc(s.name)}: ${ctx.badgeText}"
+          title="IP ${ctx.badgeText} — toca para ver el desglose completo"
+          style="opacity:${ctx.barOpacity}">
           <span style="width:${barPct}%;background:${barColor}"></span>
         </div>
-        ${s.ip!=null?`<div style="font-size:.67rem;color:var(--muted2);margin-top:4px;text-align:right;cursor:pointer" onclick="event.stopPropagation();App.UI.openIPDetail('${s.id}')">IP ${s.ip}% · toca para detalles ↗</div>`:''}
+        ${ctx.hint&&ctx.isEarly
+          ?`<div style="font-size:.66rem;color:var(--muted2);margin-top:5px;line-height:1.4">${esc(ctx.hint)}</div>`
+          :s.ip!=null?`<div style="font-size:.67rem;color:var(--muted2);margin-top:4px;text-align:right;cursor:pointer" onclick="event.stopPropagation();App.UI.openIPDetail('${s.id}')">IP ${s.ip}%${noTopics?' · sin temas (IP estimado)':''} · toca para detalles ↗</div>`:''
+        }
       </article>`;
     }).join('');
   },
@@ -2706,8 +3277,9 @@ const UI={
     const s=S.subjects.find(x=>x.id===sid); if(!s) return;
     Logic.derive();
     const corte=Logic.activeCorte(s);
-    const tl=corte?Logic.corteTimeLayer(s,corte):{layer:0,daysElapsed:null,daysRemaining:null,daysTotal:null,note:'Sin estructura'};
+    const tl=corte?Logic.corteTimeLayer(s,corte):{layer:0,daysElapsed:null,daysRemaining:null,daysTotal:null,note:'Sin estructura',preSemester:false};
     const ipt=s.ip!=null?Logic.ipTone(s.ip):Logic.ipTone(null);
+    const ctx=Logic.ipContext(s, tl);
 
     // ── Encabezado ────────────────────────────────────────────────────────
     const parcialStr=tl.preSemester
@@ -2724,10 +3296,28 @@ const UI={
     ipHdr.style.borderBottom=`1px solid ${s.color}33`;
 
     const ipMain=$('#ip-detail-main');
-    ipMain.style.color=ipt.c;
+    // In the detail view: always show real IP number (diagnostic view) but use context color
+    ipMain.style.color=ctx.isEarly ? s.color : ipt.c;
     ipMain.textContent=s.ip!=null?`${s.ip}%`:'——';
-    $('#ip-detail-label').textContent=ipt.l;
+    // Label: show context label; if early, add a note that it's the raw score
+    $('#ip-detail-label').textContent=ctx.isEarly ? `${ctx.label} · ${ipt.l.toLowerCase()} (índice)` : ipt.l;
     $('#ip-detail-corte').textContent=(corte?`Corte ${corte.numero} activo`:'Sin corte activo')+parcialStr+` · ${capaNota}`;
+
+    // §1.4: warn when IP is calculated without topic data — number exists but is incomplete
+    const noTopicsInCorte=!(corte?.temas?.length);
+    const existingWarn=$('#ip-no-topics-warn');
+    if(noTopicsInCorte){
+      if(!existingWarn){
+        const warn=document.createElement('div');
+        warn.id='ip-no-topics-warn';
+        warn.style.cssText='margin:0 18px 0;padding:9px 13px;background:rgba(251,191,36,.08);border:1px solid rgba(251,191,36,.25);border-radius:12px;font-size:.76rem;color:var(--accent2);line-height:1.5';
+        warn.textContent='⚠ IP estimado — sin temas cargados. El dominio de temas no se puede medir, por lo que este índice está basado solo en ritmo y notas. Añade temas al corte para mayor precisión.';
+        const hdr=document.getElementById('ip-detail-header');
+        if(hdr?.nextSibling) hdr.parentNode.insertBefore(warn, hdr.nextSibling);
+      }
+    } else {
+      existingWarn?.remove();
+    }
 
     // ── Sub-indicador: Dominio ────────────────────────────────────────────
     const domEl=$('#ip-sub-dominio');
@@ -2778,6 +3368,9 @@ const UI={
           <div class="ip-stat-cell"><div class="ip-stat-val">${horasR.toFixed(1)}h</div><div class="ip-stat-sub">registradas</div></div>
           <div class="ip-stat-cell"><div class="ip-stat-val">~${horasEsp.toFixed(1)}h</div><div class="ip-stat-sub">esperadas a este punto</div></div>
           <div class="ip-stat-cell"><div class="ip-stat-val">${Math.max(0,horasEsp-horasR).toFixed(1)}h</div><div class="ip-stat-sub">de diferencia</div></div>
+        </div>
+        <div style="font-size:.7rem;color:var(--muted2);margin-top:8px;padding:7px 10px;background:rgba(255,255,255,.04);border-radius:10px;line-height:1.5">
+          Referencia: 2h de estudio por crédito por corte · ${s.credits} créditos → ~${(s.credits*2).toFixed(0)}h totales por corte
         </div>`;
     } else {
       const ritMsg=tl.preSemester
@@ -2832,24 +3425,59 @@ const UI={
 
   _ipSophiaLocal(s,corte,tl,temas,ipt){
     if(!corte) return `${s.name} no tiene cortes configurados aún. Configura la estructura para que Sophia pueda darte señales reales.`;
-    // Pre-semester: no urgency, just preparatory advice
+
+    // Pre-semester: no urgency, preparatory advice
     if(tl.preSemester){
       const dLeft=tl.daysUntilSemester;
       if(dLeft<=14) return `El semestre empieza en ${dLeft} día${dLeft!==1?'s':''}. Buen momento para cargar los temas del Corte 1 y tener todo listo desde el arranque.`;
-      return `El semestre aún no ha iniciado. Aprovecha para configurar la estructura de cortes y los temas — así Sophia puede darte señales desde el primer día.`;
+      return `El semestre aún no ha iniciado. Configura la estructura de cortes y carga los temas — así Sophia puede darte señales desde el primer día.`;
     }
-    // Mejora 2: corte temprano con dominio bajo no es alarma
-    const daysLeft=tl?.daysRemaining??null;
-    if(daysLeft!=null&&daysLeft>21&&s.ip!=null&&s.ip<50){
-      return `Estás al inicio del Corte ${corte.numero} — quedan ~${daysLeft} días. Dominio bajo ahora es normal. Empieza a cargar los temas para que Sophia pueda darte señales más precisas.`;
+
+    // Determine corte phase from tl (same logic as ipContext)
+    const daysElapsed = tl?.daysElapsed ?? null;
+    const daysRemaining = tl?.daysRemaining ?? null;
+    let phase = 'sin_datos';
+    if(daysElapsed !== null){
+      if(daysElapsed <= 7)         phase = 'arranque';
+      else if(daysElapsed <= 21)   phase = 'desarrollo';
+      else                          phase = 'cierre';
     }
+    if(daysRemaining !== null && daysRemaining <= 14) phase = 'cierre';
+
     const sinVer=temas.filter(t=>t.estado===0);
-    const urgente=tl.daysRemaining!=null&&tl.daysRemaining<10;
-    if(sinVer.length&&urgente) return `${sinVer[0].nombre} sigue en Sin ver y el parcial está en ${tl.daysRemaining} días. Eso es lo más urgente ahora mismo.`;
-    if(sinVer.length) return `Hay ${sinVer.length} tema${sinVer.length!==1?'s':''} sin ver en el Corte ${corte.numero}. ${sinVer[0].nombre} es por donde empezar.`;
-    if(s.ip!=null&&s.ip<35) return `IP de ${s.ip}% — ${ipt.l.toLowerCase()}. Esta materia necesita atención real esta semana.`;
-    if(s.ip!=null&&s.ip>=75) return `IP de ${s.ip}% — vas bien en ${s.name}. Mantén el ritmo y consolida los temas que no están en Sólido aún.`;
-    return `IP de ${s.ip!=null?s.ip+'%':'——'} en ${s.name}. ${tl.daysRemaining!=null?`Corte ${corte.numero} con ~${tl.daysRemaining} días al parcial.`:'Configura el parcial para señales más precisas.'}`;
+    const allSinVer=temas.length>0&&temas.every(t=>(t.estado??0)===0);
+    const urgente=daysRemaining!=null&&daysRemaining<10;
+
+    // ── Arranque phase ────────────────────────────────────────────────────
+    if(phase === 'arranque'){
+      if(!temas.length) return `Primeros días del Corte ${corte.numero}. Carga los temas que verás este corte para que Sophia pueda orientarte con precisión.`;
+      if(allSinVer) return `Temas cargados — buen comienzo. Después de cada clase, marca los temas como "Visto en clase". Sophia empieza a medir desde ahí.`;
+      const vistos=temas.filter(t=>t.estado>0);
+      return `Arrancando el Corte ${corte.numero}. Ya tienes ${vistos.length} tema${vistos.length!==1?'s':''} marcado${vistos.length!==1?'s':''}. Sigue así después de cada clase.`;
+    }
+
+    // ── Sin datos phase ────────────────────────────────────────────────────
+    if(phase === 'sin_datos'){
+      if(!temas.length) return `Carga los temas del Corte ${corte.numero} para activar el indicador de dominio. Sin eso, Sophia trabaja a ciegas.`;
+      return `Vincula el parcial del Corte ${corte.numero} o inicia el contador para que Sophia pueda calcular la urgencia real.`;
+    }
+
+    // ── Desarrollo phase ─────────────────────────────────────────────────
+    if(phase === 'desarrollo'){
+      if(!temas.length) return `Corte ${corte.numero} en desarrollo sin temas cargados. Añádelos para que el dominio empiece a medirse — el ritmo solo no es suficiente.`;
+      if(allSinVer) return `Todos los temas del Corte ${corte.numero} siguen en "Sin ver". El corte ya lleva ${daysElapsed} días — es buen momento para empezar a marcarlos después de clase.`;
+      if(sinVer.length&&!urgente) return `${sinVer.length} tema${sinVer.length!==1?'s':''} sin ver en el Corte ${corte.numero}. ${sinVer[0].nombre} es por donde empezar.`;
+      if(s.ip!=null&&s.ip<35) return `IP de ${s.ip}% — hay tiempo, pero hay que moverle. Empieza por los temas en estados bajos.`;
+      if(s.ip!=null&&s.ip>=75) return `IP de ${s.ip}% — vas bien. Sigue marcando los temas a medida que los practicas.`;
+      return `IP de ${s.ip!=null?s.ip+'%':'——'} en ${s.name}. ${daysRemaining!=null?`~${daysRemaining} días al parcial.`:'Configura el parcial para señales más precisas.'}`;
+    }
+
+    // ── Cierre phase — real urgency ─────────────────────────────────────
+    if(sinVer.length&&urgente) return `${sinVer[0].nombre} sigue en Sin ver y el parcial está en ${daysRemaining} días. Eso es lo más urgente ahora mismo.`;
+    if(sinVer.length) return `${sinVer.length} tema${sinVer.length!==1?'s':''} sin ver y el parcial se acerca. Prioriza ${sinVer[0].nombre} primero.`;
+    if(s.ip!=null&&s.ip<35) return `IP de ${s.ip}% — ${ipt.l.toLowerCase()} con el parcial encima. Necesitas atención real esta semana.`;
+    if(s.ip!=null&&s.ip>=75) return `IP de ${s.ip}% — bien encaminado hacia el parcial. Consolida los temas que no están en Sólido aún.`;
+    return `IP de ${s.ip!=null?s.ip+'%':'——'} en ${s.name}. ${daysRemaining!=null?`Corte ${corte.numero} con ~${daysRemaining} días al parcial.`:'Configura el parcial para señales más precisas.'}`;
   },
 
 
@@ -2881,9 +3509,13 @@ const UI={
     $('#sd-kicker').textContent=`${s.credits} crédito${s.credits!==1?'s':''}`;
     $('#sd-name').textContent=s.name;
     const ipt=s.ip!=null?Logic.ipTone(s.ip):Logic.ipTone(null);
-    const ipBadgeText=s.ip!=null?`IP ${s.ip}% — ${ipt.l}`:`IP —`;
+    const detailCorte=Logic.activeCorte(s);
+    const detailTl=Logic.corteTimeLayer(s,detailCorte);
+    const detailCtx=Logic.ipContext(s,detailTl);
+    // Badge: use context-aware color and label; always show raw IP number so detail view is honest
+    const ipBadgeText=s.ip!=null?`IP ${s.ip}% — ${detailCtx.label}`:`IP —`;
     $('#sd-ida-badge').textContent=ipBadgeText;
-    $('#sd-ida-badge').style.cssText=`font-size:.72rem;color:${ipt.c};background:${ipt.c}22;border-color:${ipt.c}44`;
+    $('#sd-ida-badge').style.cssText=`font-size:.72rem;color:${detailCtx.color};background:${detailCtx.color}22;border-color:${detailCtx.color}44;opacity:${detailCtx.isEarly?0.8:1}`;
     $('#sd-creds-badge').textContent=`${s.credits} créditos`;
     // §19.1: use computed daysText/daysColor instead of inline conditional
     $('#sd-days-badge').textContent=daysText;
@@ -3016,8 +3648,9 @@ const UI={
     const cortesHTML=cortes.map(c=>{
       const isActivo=activo&&c.id===activo.id;
       // §23.2: respect user's manual expand/collapse preference within this session
-      const _uset=UI._expandedCortes[sid];
-      const _userControlled=_uset&&_uset instanceof Set;
+      // N1 fix: defensive access — _expandedCortes may not have an entry for this sid yet
+      const _uset=(UI._expandedCortes&&typeof UI._expandedCortes==='object')?UI._expandedCortes[sid]:undefined;
+      const _userControlled=_uset instanceof Set;
       // If user has explicitly opened a different corte, close the active one unless they opened it too
       const expanded=_userControlled?_uset.has(c.id):isActivo;
       const tl=Logic.corteTimeLayer(s,c);
@@ -3055,7 +3688,7 @@ const UI={
             <button class="tema-del-btn" style="background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.15);color:var(--muted2);font-size:.7rem"
               onclick="App.UI._moveTema('${esc(sid)}','${esc(c.id)}','${esc(t.id)}',1)"
               title="Bajar" ${isLast?'disabled style="opacity:.3;cursor:default"':''}>↓</button>
-            <button class="tema-del-btn" onclick="App.UI._deleteTema('${esc(sid)}','${esc(c.id)}','${esc(t.id)}')" title="Eliminar tema">×</button>
+            <button class="tema-del-btn" onclick="App.UI._deleteTema('${esc(sid)}','${esc(c.id)}','${esc(t.id)}')" title="Eliminar tema" aria-label="Eliminar tema">×</button>
           </div>
         </div>
         <div class="tema-menu hidden" id="tema-menu-${esc(t.id)}">
@@ -3086,7 +3719,7 @@ const UI={
             onclick="App.UI._hideAddTemaForm('${addFormId}')">×</button>
         </div>`;
 
-      return`<div class="corte-block">
+      return`<div class="corte-block" data-corte-id="${esc(c.id)}">
         <div class="corte-header${expanded?' expanded':''}" onclick="App.UI._toggleCorte(this)">
           <span class="corte-chevron">▶</span>
           <span class="corte-num">Corte ${c.numero}</span>
@@ -3111,21 +3744,20 @@ const UI={
 
   _toggleCorte(header){
     const body=header.nextElementSibling;
+    if(!body) return;
     const open=body.classList.toggle('open');
     header.classList.toggle('expanded',open);
     // §23.2: persist the user's choice so re-renders respect it
-    // Find the corte id from the body's first tema row or addTema form id
-    const addForm=body.querySelector('[id^="add-tema-form-"]');
-    if(addForm){
-      const corteId=addForm.id.replace('add-tema-form-','');
-      // Find sid from the current detail modal
-      const sid=UI._detailSid;
-      if(sid){
-        if(!UI._expandedCortes[sid]) UI._expandedCortes[sid]=new Set();
-        // Mark this corte as manually controlled
-        if(open) UI._expandedCortes[sid].add(corteId);
-        else UI._expandedCortes[sid].delete(corteId);
-      }
+    // N2 fix: use data-corte-id on .corte-block — reliable, no DOM search heuristics
+    const block=header.closest('.corte-block');
+    const corteId=block?.dataset?.corteId;
+    const sid=UI._detailSid;
+    if(sid && corteId){
+      // N1 fix: ensure _expandedCortes is always a plain object before indexing
+      if(!UI._expandedCortes || typeof UI._expandedCortes!=='object') UI._expandedCortes={};
+      if(!UI._expandedCortes[sid]) UI._expandedCortes[sid]=new Set();
+      if(open) UI._expandedCortes[sid].add(corteId);
+      else UI._expandedCortes[sid].delete(corteId);
     }
   },
   _showAddTemaForm(corteId){
@@ -3373,7 +4005,7 @@ const UI={
               ${!isUnweighted&&weightPct?`<span class="note-weight-chip">${weightPct}%</span>`:''}
               <span style="font-size:.95rem;font-weight:900;color:${cls}">${n.val.toFixed(1)}</span>
               <button class="note-edit-btn" onclick="App.UI._editNoteInline('${esc(s.id)}','${esc(n.id)}')" style="width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:var(--muted);font-size:.76rem;display:grid;place-items:center;cursor:pointer;transition:.15s" title="Editar nota">✏</button>
-              <button class="note-del-btn" onclick="App.UI.deleteDetailNote('${esc(s.id)}','${esc(n.id)}')">×</button>
+              <button class="note-del-btn" onclick="App.UI.deleteDetailNote('${esc(s.id)}','${esc(n.id)}')" aria-label="Eliminar nota">×</button>
             </div>
           </div>
           ${!isUnweighted&&weightPct?`<div class="note-pct-bar"><span style="width:${(weightPct/100)*100}%;background:${cls}"></span></div>`:''}
@@ -3499,8 +4131,22 @@ const UI={
       // All weight evaluated
       const final=weightedSoFar;
       const color=final>=goal?'var(--emerald)':'var(--red)';
+      let extraHTML='';
+      if(final<goal&&final<3.0){
+        // §26.1: check for habilitación event
+        const habEvt=S.events.find(e=>e.sid===s.id&&e.type==='Habilitación'&&Logic.hUntil(e.date)>0);
+        if(habEvt){
+          const daysLeft=Math.ceil(Logic.hUntil(habEvt.date)/24);
+          extraHTML=`<div style="margin-top:8px;padding:9px 12px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:12px;font-size:.78rem">🎯 <strong>Habilitación en ${daysLeft}d</strong> — ${esc(habEvt.title)}. Necesitas ≥ 3.0 para aprobar.</div>`;
+        } else {
+          extraHTML=`<div style="margin-top:8px;font-size:.74rem;color:var(--muted2)">Si hay habilitación disponible en tu materia, regístrala en Agenda.</div>`;
+        }
+      }
       const msg=final>=goal?`Ya lograste ${final.toFixed(2)} — meta cumplida ✓`:`Con todas las notas registradas quedaste en ${final.toFixed(2)}, por debajo de ${goal.toFixed(1)}.`;
-      el.innerHTML=`<div class="min-needed-row" style="border-color:${color}44;background:${color}12"><span style="color:${color};font-size:1.1rem">${final>=goal?'✓':'✕'}</span><span style="color:${color};font-weight:800">${msg}</span></div>`;
+      el.innerHTML=`<div class="min-needed-row" style="border-color:${color}44;background:${color}12;flex-direction:column;align-items:stretch;gap:6px">
+        <div style="display:flex;align-items:center;gap:8px"><span style="color:${color};font-size:1.1rem">${final>=goal?'✓':'✕'}</span><span style="color:${color};font-weight:800">${msg}</span></div>
+        ${extraHTML}
+      </div>`;
       return;
     }
 
@@ -3508,12 +4154,31 @@ const UI={
     const needed=(goal-weightedSoFar)/pendingWeight;
 
     if(needed>5){
-      el.innerHTML=`<div class="min-needed-row" style="border-color:rgba(255,77,103,.4);background:rgba(255,77,103,.1)">
-        <span style="font-size:1.1rem">✕</span>
-        <div>
-          <div style="font-weight:800;color:var(--red)">Matemáticamente imposible</div>
-          <div style="font-size:.75rem;color:var(--muted2);margin-top:3px">Para llegar a ${goal.toFixed(1)} necesitarías más de 5.0 en el ${(pendingWeight*100).toFixed(0)}% restante.</div>
+      // §26.1: check if there's a habilitación event for this subject
+      const habEvt=S.events.find(e=>e.sid===s.id&&e.type==='Habilitación'&&Logic.hUntil(e.date)>0);
+      // Calculate what's needed on a habilitación (typically replaces worst grade, 40% weight at UIS)
+      // Show the situation clearly and if there's a habilitación event, show what's needed there
+      let habHTML='';
+      if(habEvt){
+        const daysLeft=Math.ceil(Logic.hUntil(habEvt.date)/24);
+        // UIS habilitación: replaces the exam, needs ≥3.0 on it AND current avg ≥3.0 composite
+        // Simplified: show minimum needed on the hab exam assuming it replaces the failing grade
+        habHTML=`<div style="margin-top:10px;padding:10px 12px;background:rgba(251,191,36,.1);border:1px solid rgba(251,191,36,.3);border-radius:12px">
+          <div style="font-size:.72rem;font-weight:800;color:var(--orange);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">🎯 Habilitación en ${daysLeft}d</div>
+          <div style="font-size:.82rem;color:var(--text)">Tienes registrado: <strong>${esc(habEvt.title)}</strong>. En la UIS necesitas ≥ 3.0 en la habilitación para aprobar. Enfócate en los temas con menor dominio.</div>
+        </div>`;
+      } else {
+        habHTML=`<div style="margin-top:10px;font-size:.75rem;color:var(--muted2)">Si hay habilitación disponible, regístrala en Agenda para ver el seguimiento aquí.</div>`;
+      }
+      el.innerHTML=`<div class="min-needed-row" style="border-color:rgba(255,77,103,.4);background:rgba(255,77,103,.1);flex-direction:column;align-items:stretch;gap:8px">
+        <div style="display:flex;align-items:center;gap:10px">
+          <span style="font-size:1.1rem">✕</span>
+          <div>
+            <div style="font-weight:800;color:var(--red)">Matemáticamente imposible</div>
+            <div style="font-size:.75rem;color:var(--muted2);margin-top:3px">Para llegar a ${goal.toFixed(1)} necesitarías más de 5.0 en el ${(pendingWeight*100).toFixed(0)}% restante.</div>
+          </div>
         </div>
+        ${habHTML}
       </div>`;
     } else if(needed<0){
       el.innerHTML=`<div class="min-needed-row" style="border-color:rgba(52,211,153,.4);background:rgba(52,211,153,.1)">
@@ -3800,8 +4465,6 @@ const UI={
     const sem=Logic.semesterInfo();
     // No urgency alerts before semester starts
     if(sem.configured&&!sem.started){ el.innerHTML=''; return; }
-    const now=Date.now();
-    // Calcular sesiones esta semana por materia
     const weekStart=new Date(); weekStart.setHours(0,0,0,0);
     weekStart.setDate(weekStart.getDate()-weekStart.getDay()+(weekStart.getDay()===0?-6:1));
     const sesWeek=sid=>S.flows.filter(f=>f.sid===sid&&new Date(f.ts||0)>=weekStart).length;
@@ -3809,37 +4472,52 @@ const UI={
     const alertas=[];
 
     // Alerta 1: materia con parcial más próximo + 0 sesiones esta semana
+    // Only fire if the subject is NOT in early phase (no false alarms week 1 of a corte)
     const conParcial=S.subjects
-      .map(s=>{ const ev=S.events.filter(e=>e.sid===s.id&&e.type==='Parcial'&&Logic.hUntil(e.date)>0).sort((a,b)=>new Date(a.date)-new Date(b.date))[0]; return{s,ev}; })
+      .map(s=>{
+        const ev=S.events.filter(e=>e.sid===s.id&&e.type==='Parcial'&&Logic.hUntil(e.date)>0).sort((a,b)=>new Date(a.date)-new Date(b.date))[0];
+        return{s,ev};
+      })
       .filter(x=>x.ev)
       .sort((a,b)=>new Date(a.ev.date)-new Date(b.ev.date));
     if(conParcial.length){
       const {s,ev}=conParcial[0];
       const sW=sesWeek(s.id);
       const dias=Math.ceil(Logic.hUntil(ev.date)/24);
-      if(sW===0&&dias<=14){
-        const ipt=s.ip!=null?Logic.ipTone(s.ip):null;
+      const corte=Logic.activeCorte(s);
+      const tl=corte?Logic.corteTimeLayer(s,corte):null;
+      const ctx=Logic.ipContext(s,tl||{layer:0,daysElapsed:null,daysRemaining:null,daysTotal:null,note:'',preSemester:false});
+      // Only alert if subject is in cierre or desarrollo phase (not arranque)
+      if(sW===0&&dias<=14&&!ctx.isEarly){
         const urgColor=dias<=7?'var(--red)':'var(--orange)';
         alertas.push(`<div class="glass semana-alerta" style="border-color:${urgColor}44;background:${urgColor}10">
           <span style="font-size:1rem;flex-shrink:0">⚠</span>
           <div style="flex:1;min-width:0">
             <div style="font-weight:800;font-size:.84rem;color:${urgColor}">${esc(s.name)} — sin sesión esta semana</div>
-            <div style="font-size:.76rem;color:var(--muted);margin-top:2px">Parcial en ${dias}d${ipt?' · IP '+s.ip+'% ('+ipt.l+')':''}. Es la que más lo necesita ahora mismo.</div>
+            <div style="font-size:.76rem;color:var(--muted);margin-top:2px">Parcial en ${dias}d · IP ${ctx.badgeText} (${ctx.label}). Es la que más lo necesita ahora mismo.</div>
           </div>
         </div>`);
       }
     }
 
-    // Alerta 2: materia con IP < 30% (independiente del parcial)
-    const vulnerable=S.subjects.filter(s=>s.ip!=null&&s.ip<30);
+    // Alerta 2: IP < 30% ONLY in cierre or desarrollo phase — no false alarms in arranque
+    const vulnerable=S.subjects.filter(s=>{
+      if(s.ip==null||s.ip>=30) return false;
+      const corte=Logic.activeCorte(s);
+      const tl=corte?Logic.corteTimeLayer(s,corte):null;
+      const ctx=Logic.ipContext(s,tl||{layer:0,daysElapsed:null,daysRemaining:null,daysTotal:null,note:'',preSemester:false});
+      return !ctx.isEarly; // only alert when it's genuinely urgent
+    });
     vulnerable.forEach(s=>{
-      // Evitar duplicar si ya está en alerta 1
       if(alertas.length>0&&alertas[0].includes(esc(s.name))) return;
+      const corte=Logic.activeCorte(s);
+      const tl=corte?Logic.corteTimeLayer(s,corte):null;
+      const ctx=Logic.ipContext(s,tl||{layer:0,daysElapsed:null,daysRemaining:null,daysTotal:null,note:'',preSemester:false});
       alertas.push(`<div class="glass semana-alerta" style="border-color:var(--red)44;background:rgba(255,77,103,.08)">
         <span style="font-size:1rem;flex-shrink:0">🔴</span>
         <div style="flex:1;min-width:0">
-          <div style="font-weight:800;font-size:.84rem;color:var(--red)">${esc(s.name)} — IP ${s.ip}%</div>
-          <div style="font-size:.76rem;color:var(--muted);margin-top:2px">Está en zona Descuidada. Necesita atención antes de que el corte avance más.</div>
+          <div style="font-weight:800;font-size:.84rem;color:var(--red)">${esc(s.name)} — IP ${s.ip}% (${ctx.label})</div>
+          <div style="font-size:.76rem;color:var(--muted);margin-top:2px">Necesita atención antes de que el corte avance más.</div>
         </div>
       </div>`);
     });
@@ -3878,8 +4556,7 @@ const UI={
     el.innerHTML=(Logic._sorted||S.subjects).map(s=>{
       const corte=Logic.activeCorte(s);
       const tl=corte?Logic.corteTimeLayer(s,corte):null;
-      const ipt=s.ip!=null?Logic.ipTone(s.ip):Logic.ipTone(null);
-      const ipVal=s.ip!=null?s.ip+'%':'——';
+      const ctx=Logic.ipContext(s, tl||{layer:0,daysElapsed:null,daysRemaining:null,daysTotal:null,note:'',preSemester:false});
       const sW=sesWeek(s.id);
       const temas=corte?.temas||[];
       const dominados=temas.filter(t=>t.estado>=3).length;
@@ -3890,17 +4567,22 @@ const UI={
         :(tl?.daysElapsed!=null?`+${tl.daysElapsed}d del corte`:'Sin fecha');
       const esUrgente=s.id===urgenteSid;
 
+      // parcialStr color: only red/orange when actually urgent (non-early phase)
+      const parcialColor=(!ctx.isEarly&&tl?.daysRemaining!=null&&tl.daysRemaining<=7)?'var(--red)'
+        :(!ctx.isEarly&&tl?.daysRemaining!=null&&tl.daysRemaining<=14)?'var(--orange)'
+        :'var(--muted2)';
+
       return`<div class="glass semana-mat-card${esUrgente?' semana-mat-urgente':''}">
         <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
           <div style="width:9px;height:9px;border-radius:50%;flex-shrink:0;background:${s.color}"></div>
           <span style="font-weight:800;font-size:.88rem;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(s.name)}</span>
-          <span style="font-size:.72rem;font-weight:900;color:${ipt.c};background:${ipt.c}18;border:1px solid ${ipt.c}33;padding:3px 9px;border-radius:999px;flex-shrink:0">${ipVal}</span>
-          ${esUrgente?`<span class="semana-prioridad-badge">PRIORIDAD</span>`:''}
+          <span style="font-size:.72rem;font-weight:900;color:${ctx.color};background:${ctx.color}18;border:1px solid ${ctx.color}33;padding:3px 9px;border-radius:999px;flex-shrink:0;opacity:${ctx.isEarly?0.75:1}">${ctx.badgeText}</span>
+          ${esUrgente&&!ctx.isEarly?`<span class="semana-prioridad-badge">PRIORIDAD</span>`:''}
         </div>
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:8px">
           <span style="font-size:.72rem;color:var(--muted2)">${corte?`Corte ${corte.numero}`:''}</span>
           ${corte?`<span style="font-size:.7rem;color:var(--muted2)">·</span>
-          <span style="font-size:.72rem;color:${tl?.daysRemaining!=null&&tl.daysRemaining<=7?'var(--red)':tl?.daysRemaining!=null&&tl.daysRemaining<=14?'var(--orange)':'var(--muted2)'}">${parcialStr}</span>`:''}
+          <span style="font-size:.72rem;color:${parcialColor}">${parcialStr}</span>`:''}
           <span style="font-size:.7rem;color:var(--muted2)">·</span>
           <span style="font-size:.72rem;color:${sW>0?'var(--emerald)':'var(--muted2)'}">${sW} ses. esta semana</span>
         </div>
@@ -3910,9 +4592,10 @@ const UI={
             <span style="font-size:.68rem;color:var(--muted2)">${pct}%</span>
           </div>
           <div style="height:6px;border-radius:999px;background:rgba(255,255,255,.08);overflow:hidden">
-            <div style="height:100%;width:${pct}%;background:${ipt.c};border-radius:999px;transition:width .8s ease"></div>
+            <div style="height:100%;width:${pct}%;background:${ctx.barColor};border-radius:999px;transition:width .8s ease;opacity:${ctx.barOpacity}"></div>
           </div>
-        </div>`:'<p style="font-size:.72rem;color:var(--muted2)">Sin temas cargados — añádelos para ver cobertura del corte.</p>'}
+          ${ctx.isEarly&&pct===0?`<p style="font-size:.67rem;color:var(--muted2);margin-top:4px">Marca temas como "Visto en clase" después de cada sesión.</p>`:''}
+        </div>`:`<p style="font-size:.72rem;color:var(--muted2)">Sin temas cargados — añádelos para ver cobertura del corte.</p>`}
       </div>`;
     }).join('');
   },
@@ -4062,6 +4745,7 @@ const UI={
               <span class="pill" style="font-size:.72rem;padding:5px 8px">${e.type}</span>
               <div style="display:flex;align-items:center;gap:8px">
                 <span class="time-chip">${rel(e.date)}</span>
+                <button title="Editar" style="width:26px;height:26px;border-radius:8px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);color:var(--muted);font-size:.76rem;display:grid;place-items:center" onclick="App.UI.openEditEvent('${e.id}')">✏</button>
                 <button title="Eliminar" style="width:26px;height:26px;border-radius:8px;background:rgba(255,77,103,.15);border:1px solid rgba(255,77,103,.28);color:var(--red);font-size:.85rem;display:grid;place-items:center" onclick="App.Logic.deleteEvent('${e.id}')">×</button>
               </div>
             </div>
@@ -4110,6 +4794,8 @@ const UI={
   },
 
   _agendaView: 'proximity',
+  _dismissedFlowSids: new Set(), // §14.1: flows dismissed this session — initialized as Set, never null
+  _canvasDirty: false,
 
   renderPulses(){
     // Pulses are stored newest-first via unshift() — we render them in that
@@ -4142,16 +4828,23 @@ const UI={
     if(!S.chat.length){
       if(empty) empty.style.display='';
       UI._lastRenderedChatLength=0;
+      UI._lastRenderedChatMsgId=null;
       return;
     }
     if(empty) empty.style.display='none';
 
     const visible=S.chat.slice(-30);
-    // If the rendered count matches current visible count (no new messages), skip full re-render
+    const lastMsg=visible[visible.length-1];
+
+    // D8 fix: compare by the last message's identity (ts+role), not just array length.
+    // When S.chat has >=30 entries, visible.length is always 30 — length comparison alone
+    // causes new messages to be silently skipped.
+    const lastMsgId=lastMsg?(lastMsg.ts||'')+(lastMsg.role||'')+(lastMsg.text||'').slice(0,12):null;
     const existingMsgs=$$('.msg');
-    if(existingMsgs.length===visible.length && UI._lastRenderedChatLength===visible.length){
-      return; // nothing changed
+    if(existingMsgs.length===visible.length && UI._lastRenderedChatMsgId===lastMsgId){
+      return; // truly nothing changed
     }
+
     // Full re-render only when message count changed significantly (e.g. initial load)
     // For incremental: only add messages that aren't already in the DOM
     if(existingMsgs.length===0 || Math.abs(existingMsgs.length - visible.length) > 1){
@@ -4175,6 +4868,7 @@ const UI={
       });
     }
     UI._lastRenderedChatLength=visible.length;
+    UI._lastRenderedChatMsgId=lastMsgId;
     wrap.scrollTop=wrap.scrollHeight;
   },
   addChatMsg(role, text, id, isTyping=false){
@@ -4187,8 +4881,11 @@ const UI={
     // §16.3: allow <br> for newlines; esc() prevents XSS
     el.innerHTML=esc(text).replace(/\n/g,'<br>');
     wrap.appendChild(el);
-    // §16.2: track rendered count
+    // §16.2: track rendered count AND last message identity — must match renderChat's logic
     UI._lastRenderedChatLength=(UI._lastRenderedChatLength||0)+1;
+    // Sync the identity key so renderChat() doesn't force a needless full re-render next call
+    const lastMsg=S.chat.length?S.chat[S.chat.length-1]:null;
+    if(lastMsg) UI._lastRenderedChatMsgId=(lastMsg.ts||'')+(lastMsg.role||'')+(lastMsg.text||'').slice(0,12);
     wrap.scrollTop=wrap.scrollHeight;
   },
   removeChatMsg(id){
@@ -4224,6 +4921,13 @@ const UI={
 
   drawCanvas(){
     const cv=$('#weeklyCanvas'); if(!cv)return;
+    // §16.1: if the habla section is not visible, mark dirty and defer
+    const hablaSection=$('#habla');
+    if(hablaSection&&!hablaSection.classList.contains('active')){
+      UI._canvasDirty=true;
+      return;
+    }
+    UI._canvasDirty=false;
     // §10.5: remove any previous empty overlay
     const wrap=cv.parentElement;
     const prevOverlay=wrap?.querySelector('.canvas-empty-overlay');
@@ -4546,6 +5250,8 @@ const OB={
     $('#app').classList.remove('hidden');
     $('#bottom-nav').classList.remove('hidden');
     App.bindMain(); UI.renderAll();
+    // §20.1: new user starts on inicio — clear any stale tab
+    try{ sessionStorage.removeItem('sophia_tab'); }catch(_){}
   }
 };
 
@@ -4558,19 +5264,35 @@ const App={
       btn.addEventListener('click',()=>{
         $$('.nav-item').forEach(b=>b.classList.remove('active')); btn.classList.add('active');
         $$('.section').forEach(s=>s.classList.remove('active')); $('#'+btn.dataset.t).classList.add('active');
+        // §20.1: persist active tab so it survives a page reload
+        try{ sessionStorage.setItem('sophia_tab', btn.dataset.t); }catch(_){}
         // §20.2: close all open modals when switching tabs
         $$('.modal.open').forEach(m=>m.classList.remove('open'));
         if(btn.dataset.t==='habla') setTimeout(()=>{
-          // Force canvas width from window since section may just have become visible
+          // §16.1: always draw when habla becomes visible (consuming dirty flag)
           const cv=$('#weeklyCanvas');
           if(cv&&cv.offsetWidth<20){
             const w=Math.min(window.innerWidth-48, 420);
             cv.style.width=w+'px';
           }
+          UI._canvasDirty=false;
           UI.drawCanvas();
         },60);
         window.scrollTo({top:0,behavior:'smooth'});
       });
+    });
+    // Launch modal — "Empezar sesión" opens the session registration modal
+    $('#launch-btn-go').addEventListener('click',()=>{
+      const sid=UI._launchSid;
+      const mins=UI._launchMins;
+      document.getElementById('m-launch').classList.remove('open');
+      if(sid) Logic.openSession(sid, mins);
+    });
+    // Restore dismissed flows
+    const restoreBtn=$('#btn-restore-flows');
+    if(restoreBtn) restoreBtn.addEventListener('click',()=>{
+      UI._dismissedFlowSids=new Set();
+      UI.renderFlows();
     });
     // Config
     $('#btn-config').addEventListener('click',()=>{
@@ -4711,6 +5433,14 @@ const App={
       $('#bottom-nav').classList.remove('hidden');
       App.bindMain();
       UI.renderAll();
+      // §20.1: restore last active tab from sessionStorage
+      try{
+        const lastTab=sessionStorage.getItem('sophia_tab');
+        if(lastTab){
+          const btn=$$('.nav-item').find(b=>b.dataset.t===lastTab);
+          if(btn) btn.click();
+        }
+      }catch(_){}
     }
   }
 };
